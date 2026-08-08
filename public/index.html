@@ -1,477 +1,589 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sopheak Top Up</title><style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-  <title>Sopheak Top Up</title>
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#070b16;
+  color:#fff;
+  min-height:100vh;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(7,11,22,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid #1d2945;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1020;
-      color: white;
-    }
+.nav{
+  max-width:1050px;
+  margin:auto;
+  height:64px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
 
-    header {
-      padding: 28px 20px;
-      text-align: center;
-      background: linear-gradient(135deg, #6c5ce7, #00cec9);
-    }
+.logo{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:.5px;
+  color:#58e7ff;
+}
 
-    header h1 {
-      margin: 0;
-    }
+.online{
+  font-size:12px;
+  padding:7px 12px;
+  border-radius:30px;
+  color:#5cffae;
+  background:#102a22;
+  border:1px solid #194b3c;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
+.hero{
+  padding:42px 18px 35px;
+  background:
+    radial-gradient(circle at 80% 20%,#204c91 0,transparent 35%),
+    radial-gradient(circle at 10% 90%,#174f67 0,transparent 35%),
+    linear-gradient(135deg,#0d1730,#070b16);
+}
 
-    #search {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
+.hero-inner{
+  max-width:1050px;
+  margin:auto;
+}
 
-    .games {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
+.hero h1{
+  font-size:36px;
+  line-height:1.1;
+  margin-bottom:12px;
+}
 
-    .game {
-      background: #151b30;
-      padding: 18px;
-      border-radius: 16px;
-      border: 1px solid #293252;
-    }
+.hero p{
+  color:#aebbd5;
+  font-size:15px;
+  max-width:600px;
+  line-height:1.6;
+}
 
-    .game h2 {
-      color: #74b9ff;
-      margin-top: 0;
-    }
+.hero-buttons{
+  display:flex;
+  gap:10px;
+  margin-top:22px;
+}
 
-    .package {
-      margin-top: 10px;
-      padding: 13px;
-      background: #202842;
-      border-radius: 10px;
-    }
+.hero-btn{
+  padding:12px 17px;
+  border-radius:11px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:14px;
+}
 
-    .package-name {
-      display: block;
-      margin-bottom: 8px;
-    }
+.primary{
+  background:linear-gradient(90deg,#20d8ff,#6578ff);
+  color:white;
+}
 
-    .price {
-      color: #55efc4;
-      font-weight: bold;
-    }
+.secondary{
+  background:#111b31;
+  border:1px solid #263556;
+  color:#c8d4ef;
+}
 
-    .buy-btn {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #6c5ce7, #00cec9);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.container{
+  max-width:1050px;
+  margin:auto;
+  padding:0 18px 40px;
+}
 
-    .buy-btn:active {
-      transform: scale(0.98);
-    }
+.section{
+  margin-top:28px;
+}
 
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+.section-title{
+  font-size:21px;
+  margin-bottom:15px;
+}
 
-    .modal-box {
-      width: 100%;
-      max-width: 420px;
-      background: #151b30;
-      padding: 22px;
-      border-radius: 18px;
-      border: 1px solid #293252;
-    }
+.section-title span{
+  color:#58e7ff;
+}
 
-    .modal-box h2 {
-      margin-top: 0;
-      color: #74b9ff;
-    }
+.games{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
 
-    .modal-box input {
-      width: 100%;
-      padding: 13px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 9px;
-      font-size: 15px;
-    }
+.game{
+  background:#0e1527;
+  border:1px solid #202d4b;
+  border-radius:16px;
+  padding:17px;
+  cursor:pointer;
+  transition:.2s;
+}
 
-    .confirm-btn {
-      width: 100%;
-      padding: 13px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 9px;
-      background: #00b894;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.game:hover{
+  transform:translateY(-2px);
+}
 
-    .close-btn {
-      width: 100%;
-      padding: 11px;
-      margin-top: 8px;
-      border: none;
-      border-radius: 9px;
-      background: #d63031;
-      color: white;
-      cursor: pointer;
-    }
+.game.active{
+  border-color:#58e7ff;
+  background:#10243a;
+  box-shadow:0 0 0 1px #58e7ff;
+}
 
-    .result {
-      margin-top: 15px;
-      padding: 14px;
-      border-radius: 10px;
-      background: #202842;
-      display: none;
-    }
+.game-icon{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#1d78ff,#6c48ff);
+  font-size:21px;
+  margin-bottom:11px;
+}
 
-    .success {
-      color: #55efc4;
-    }
+.game-name{
+  font-weight:bold;
+}
 
-    .error {
-      color: #ff7675;
-    }
-  </style>
-</head>
+.game-info{
+  color:#7f8eac;
+  font-size:12px;
+  margin-top:5px;
+}
 
-<body>
+.packages{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
 
-<header>
-  <h1>🔥 Sopheak Top Up</h1>
-  <p>Fast • Simple • Game Top Up</p>
-</header>
+.package{
+  background:#0e1527;
+  border:1px solid #202d4b;
+  border-radius:16px;
+  padding:18px;
+  cursor:pointer;
+  transition:.2s;
+}
 
-<div class="container">
+.package:hover{
+  border-color:#40567f;
+}
 
-  <input
-    id="search"
-    type="text"
-    placeholder="🔎 Search game..."
-  >
+.package.active{
+  border-color:#58e7ff;
+  background:#10243a;
+  box-shadow:0 0 0 1px #58e7ff;
+}
 
-  <div id="games" class="games">
-    Loading...
-  </div>
+.diamond{
+  color:#58e7ff;
+  font-size:20px;
+  font-weight:900;
+}
 
-</div>
+.package-name{
+  margin-top:6px;
+  font-size:13px;
+  color:#a9b6d0;
+}
 
-<!-- BUY MODAL -->
+.price{
+  margin-top:12px;
+  color:#ffd75e;
+  font-size:16px;
+  font-weight:bold;
+}
 
-<div id="buyModal" class="modal">
+.order-box{
+  margin-top:28px;
+  padding:20px;
+  background:#0d1425;
+  border:1px solid #243352;
+  border-radius:18px;
+}
 
-  <div class="modal-box">
+.selected{
+  padding:13px;
+  border-radius:11px;
+  background:#101c31;
+  border:1px solid #243657;
+  color:#b9c8e4;
+  margin-bottom:18px;
+}
 
-    <h2>🛒 Buy Top Up</h2>
+.selected strong{
+  color:#58e7ff;
+}
 
-    <p id="selectedGame"></p>
-    <p id="selectedProduct"></p>
+label{
+  display:block;
+  color:#b5c2db;
+  font-size:13px;
+  margin:14px 0 7px;
+}
 
-    <input
-      id="playerId"
-      type="text"
-      placeholder="Player ID"
-    >
+input{
+  width:100%;
+  padding:14px;
+  border-radius:11px;
+  border:1px solid #293858;
+  background:#070c18;
+  color:white;
+  outline:none;
+  font-size:14px;
+}
 
-    <input
-      id="serverId"
-      type="text"
-      placeholder="Server ID (optional)"
-    >
+input:focus{
+  border-color:#58e7ff;
+  box-shadow:0 0 0 2px rgba(88,231,255,.08);
+}
 
-    <button
-      class="confirm-btn"
-      onclick="confirmOrder()"
-    >
-      ✅ CONFIRM ORDER
-    </button>
+.confirm{
+  width:100%;
+  border:0;
+  margin-top:19px;
+  padding:15px;
+  border-radius:12px;
+  color:white;
+  font-weight:900;
+  font-size:15px;
+  background:linear-gradient(90deg,#18d5ff,#6376ff);
+  cursor:pointer;
+}
 
-    <button
-      class="close-btn"
-      onclick="closeModal()"
-    >
-      Cancel
-    </button>
+.confirm:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
 
-    <div id="result" class="result"></div>
+.result{
+  display:none;
+  margin-top:18px;
+  padding:18px;
+  background:#0c211b;
+  border:1px solid #24634d;
+  border-radius:15px;
+}
 
-  </div>
+.result-title{
+  color:#55ffb0;
+  font-weight:bold;
+  margin-bottom:12px;
+}
 
-</div>
+.result-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:7px 0;
+  color:#9eacc5;
+  font-size:13px;
+}
 
-<script>
+.result-row strong{
+  color:white;
+}
 
-let allGames = {};
-let selectedGame = "";
-let selectedProduct = null;
+.status{
+  color:#ffd75e !important;
+}
 
-async function loadGames() {
+footer{
+  text-align:center;
+  padding:35px 18px;
+  color:#56647f;
+  font-size:12px;
+  border-top:1px solid #151f36;
+}
 
-  try {
+@media(min-width:700px){
+  .games{
+    grid-template-columns:repeat(4,1fr);
+  }
 
-    const response = await fetch("/api/prices");
-    const data = await response.json();
+  .packages{
+    grid-template-columns:repeat(4,1fr);
+  }
 
-    if (!data.success) {
-      throw new Error("Failed to load prices");
-    }
-
-    allGames = data.games;
-
-    renderGames(allGames);
-
-  } catch (error) {
-
-    document.getElementById("games").innerHTML =
-      `<p class="error">❌ Failed to load games.</p>`;
-
-    console.error(error);
+  .hero h1{
+    font-size:48px;
   }
 }
+</style></head><body><header>
+  <div class="nav">
+    <div class="logo">⚡ SOPHEAK TOP UP</div>
+    <div class="online">● ONLINE</div>
+  </div>
+</header><section class="hero">
+  <div class="hero-inner">
+    <h1>Game Top Up<br>Fast & Simple.</h1><p>
+  Top up your favorite games quickly.
+  Choose a package, enter your Player ID,
+  and create your order.
+</p>
 
+<div class="hero-buttons">
+  <a href="#topup" class="hero-btn primary">💎 Top Up Now</a>
+  <a href="#games" class="hero-btn secondary">🎮 Games</a>
+</div>
 
-function renderGames(games) {
+  </div>
+</section><main class="container" id="topup"><section class="section" id="games">
+  <h2 class="section-title">🎮 <span>Select</span> Game</h2>  <div class="games"><div class="game active">
+  <div class="game-icon">⚔️</div>
+  <div class="game-name">Mobile Legends</div>
+  <div class="game-info">Diamonds</div>
+</div>
 
-  const container = document.getElementById("games");
+<div class="game">
+  <div class="game-icon">🔥</div>
+  <div class="game-name">Free Fire</div>
+  <div class="game-info">Coming Soon</div>
+</div>
 
-  container.innerHTML = "";
+<div class="game">
+  <div class="game-icon">🔫</div>
+  <div class="game-name">COD Mobile</div>
+  <div class="game-info">Coming Soon</div>
+</div>
 
-  Object.entries(games).forEach(([name, game]) => {
+<div class="game">
+  <div class="game-icon">🎮</div>
+  <div class="game-name">More Games</div>
+  <div class="game-info">Coming Soon</div>
+</div>
 
-    const card = document.createElement("div");
+  </div>
+</section><section class="section">  <h2 class="section-title">💎 <span>Select</span> Diamonds</h2>  <div class="packages"><div class="package active"
+     data-product="ml_56"
+     data-name="56 Diamonds"
+     data-price="4000">
 
-    card.className = "game";
+  <div class="diamond">💎 56</div>
+  <div class="package-name">56 Diamonds</div>
+  <div class="price">4,000៛</div>
 
-    let packages = "";
+</div>
 
-    game.products.forEach(product => {
+<div class="package"
+     data-product="ml_112"
+     data-name="112 Diamonds"
+     data-price="8000">
 
-      packages += `
+  <div class="diamond">💎 112</div>
+  <div class="package-name">112 Diamonds</div>
+  <div class="price">8,000៛</div>
 
-        <div class="package">
+</div>
 
-          <span class="package-name">
-            ${product.name}
-          </span>
+<div class="package"
+     data-product="ml_223"
+     data-name="223 Diamonds"
+     data-price="16000">
 
-          <span class="price">
-            ${product.price.toLocaleString()}៛
-          </span>
+  <div class="diamond">💎 223</div>
+  <div class="package-name">223 Diamonds</div>
+  <div class="price">16,000៛</div>
 
-          <button
-            class="buy-btn"
-            onclick='openBuyModal(${JSON.stringify(name)}, ${JSON.stringify(product)})'
-          >
-            🛒 BUY NOW
-          </button>
+</div>
 
-        </div>
+<div class="package"
+     data-product="ml_336"
+     data-name="336 Diamonds"
+     data-price="24000">
 
-      `;
-    });
+  <div class="diamond">💎 336</div>
+  <div class="package-name">336 Diamonds</div>
+  <div class="price">24,000៛</div>
 
-    card.innerHTML = `
+</div>
 
-      <h2>🎮 ${name}</h2>
+  </div></section><section class="order-box">  <h2 class="section-title">🛒 Order Details</h2>  <div class="selected" id="selected">
+    Selected:
+    <strong>56 Diamonds</strong>
+    — 4,000៛
+  </div><label for="playerId">Player ID</label>
+<input
+id="playerId"
+type="text"
+inputmode="numeric"
+placeholder="Enter your Player ID"
 
-      <p>
-        Currency: ${game.currency}
-      </p>
+«»
 
-      ${packages}
+<label for="serverId">Server ID</label>
+<input
+id="serverId"
+type="text"
+inputmode="numeric"
+placeholder="Enter your Server ID"
 
-    `;
+«»
 
-    container.appendChild(card);
+  <button class="confirm" id="buy">
+    CONFIRM ORDER
+  </button></section><section class="result" id="result">  <div class="result-title">
+    ✅ Order Created Successfully
+  </div>  <div class="result-row">
+    <span>Order ID</span>
+    <strong id="orderId">-</strong>
+  </div>  <div class="result-row">
+    <span>Product</span>
+    <strong id="resultProduct">-</strong>
+  </div>  <div class="result-row">
+    <span>Player ID</span>
+    <strong id="resultPlayer">-</strong>
+  </div>  <div class="result-row">
+    <span>Status</span>
+    <strong class="status" id="status">PENDING</strong>
+  </div></section></main><footer>
+  Sopheak Top Up © 2026
+</footer><script>
+
+let selected = {
+  productId: "ml_56",
+  name: "56 Diamonds",
+  price: 4000
+};
+
+const packages =
+  document.querySelectorAll(".package");
+
+const selectedBox =
+  document.getElementById("selected");
+
+const buy =
+  document.getElementById("buy");
+
+packages.forEach(card => {
+
+  card.addEventListener("click", () => {
+
+    packages.forEach(item =>
+      item.classList.remove("active")
+    );
+
+    card.classList.add("active");
+
+    selected = {
+      productId: card.dataset.product,
+      name: card.dataset.name,
+      price: Number(card.dataset.price)
+    };
+
+    selectedBox.innerHTML =
+      "Selected: <strong>" +
+      selected.name +
+      "</strong> — " +
+      selected.price.toLocaleString() +
+      "៛";
   });
-}
 
+});
 
-function openBuyModal(gameName, product) {
-
-  selectedGame = gameName;
-  selectedProduct = product;
-
-  document.getElementById("selectedGame").textContent =
-    `🎮 Game: ${gameName}`;
-
-  document.getElementById("selectedProduct").textContent =
-    `💎 ${product.name} — ${product.price.toLocaleString()}៛`;
-
-  document.getElementById("playerId").value = "";
-  document.getElementById("serverId").value = "";
-
-  document.getElementById("result").style.display = "none";
-
-  document.getElementById("buyModal").style.display = "flex";
-}
-
-
-function closeModal() {
-
-  document.getElementById("buyModal").style.display = "none";
-}
-
-
-async function confirmOrder() {
+buy.addEventListener("click", async () => {
 
   const playerId =
-    document.getElementById("playerId").value.trim();
+    document.getElementById("playerId")
+      .value.trim();
 
   const serverId =
-    document.getElementById("serverId").value.trim();
-
-  const result =
-    document.getElementById("result");
+    document.getElementById("serverId")
+      .value.trim();
 
   if (!playerId) {
-
-    result.style.display = "block";
-
-    result.innerHTML =
-      `<span class="error">❌ Please enter Player ID.</span>`;
-
+    alert("Please enter Player ID.");
     return;
   }
 
-  result.style.display = "block";
+  if (!serverId) {
+    alert("Please enter Server ID.");
+    return;
+  }
 
-  result.innerHTML =
-    `<span>⏳ Creating order...</span>`;
+  buy.disabled = true;
+  buy.textContent = "CREATING ORDER...";
 
   try {
 
-    const response = await fetch("/api/orders", {
-
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-
-        game: selectedGame,
-
-        productId: selectedProduct.id,
-
-        playerId: playerId,
-
-        serverId: serverId || null
-
-      })
-
-    });
+    const response =
+      await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          game: "Mobile Legends",
+          productId: selected.productId,
+          playerId: playerId,
+          serverId: serverId
+        })
+      });
 
     const data = await response.json();
 
-    if (!data.success) {
-
+    if (!response.ok || !data.success) {
       throw new Error(
-        data.error || "Order failed"
+        data.message || "Order creation failed"
       );
-
     }
 
-    result.innerHTML = `
+    document.getElementById("orderId")
+      .textContent = data.order.orderId;
 
-      <span class="success">
+    document.getElementById("resultProduct")
+      .textContent = data.order.productName ||
+                      selected.name;
 
-        ✅ Order Created
+    document.getElementById("resultPlayer")
+      .textContent = playerId;
 
-        <br><br>
+    document.getElementById("status")
+      .textContent = data.order.status ||
+                      "PENDING";
 
-        <strong>
-          Order ID:
-        </strong>
+    document.getElementById("result")
+      .style.display = "block";
 
-        ${data.order.orderId}
-
-        <br>
-
-        <strong>
-          Status:
-        </strong>
-
-        ${data.order.status}
-
-      </span>
-
-    `;
+    document.getElementById("result")
+      .scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
 
   } catch (error) {
 
-    result.innerHTML = `
+    alert(
+      "Order failed: " +
+      error.message
+    );
 
-      <span class="error">
+  } finally {
 
-        ❌ ${error.message}
-
-      </span>
-
-    `;
+    buy.disabled = false;
+    buy.textContent = "CONFIRM ORDER";
 
   }
-}
 
+});
 
-document
-  .getElementById("search")
-  .addEventListener("input", function () {
-
-    const query =
-      this.value.toLowerCase();
-
-    const filtered =
-      Object.fromEntries(
-
-        Object.entries(allGames)
-          .filter(([name]) =>
-            name.toLowerCase().includes(query)
-          )
-
-      );
-
-    renderGames(filtered);
-  });
-
-
-loadGames();
-
-</script>
-
-</body>
+</script></body>
 </html>
