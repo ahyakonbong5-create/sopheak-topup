@@ -1,1462 +1,649 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="theme-color" content="#090817">
-<title>Sopheak Top Up</title>
-
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-:root{
-  --bg:#080714;
-  --card:#111020;
-  --card2:#151329;
-  --line:#28243f;
-  --text:#fff;
-  --muted:#9995b2;
-  --primary:#8b5cf6;
-  --primary2:#6d5dfc;
-  --cyan:#36d9ff;
-  --pink:#ff4fd8;
-  --green:#35e6a1;
-  --yellow:#ffd45c;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  background:
-    radial-gradient(circle at 15% 0%,rgba(139,92,246,.18),transparent 28%),
-    radial-gradient(circle at 100% 20%,rgba(255,79,216,.10),transparent 30%),
-    var(--bg);
-  color:var(--text);
-  min-height:100vh;
-}
-
-button,
-input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-/* HEADER */
-
-.header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  border-bottom:1px solid rgba(255,255,255,.07);
-  background:rgba(8,7,20,.86);
-  backdrop-filter:blur(18px);
-}
-
-.nav{
-  max-width:1180px;
-  height:68px;
-  margin:auto;
-  padding:0 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.brand-logo{
-  width:40px;
-  height:40px;
-  border-radius:13px;
-  display:grid;
-  place-items:center;
-  background:
-    linear-gradient(135deg,#8b5cf6,#ff4fd8);
-  box-shadow:0 0 25px rgba(139,92,246,.35);
-  font-size:21px;
-}
-
-.brand-name{
-  font-weight:900;
-  letter-spacing:.3px;
-}
-
-.brand-name span{
-  color:#a78bfa;
-}
-
-.status{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  padding:7px 11px;
-  border:1px solid rgba(53,230,161,.2);
-  background:rgba(53,230,161,.07);
-  border-radius:30px;
-  color:#6ff2c0;
-  font-size:11px;
-  font-weight:800;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 10px var(--green);
-}
-
-/* HERO */
-
-.hero{
-  max-width:1180px;
-  margin:22px auto 0;
-  padding:0 18px;
-}
-
-.hero-card{
-  min-height:245px;
-  border:1px solid var(--line);
-  border-radius:25px;
-  overflow:hidden;
-  position:relative;
-  padding:32px 25px;
-  background:
-    radial-gradient(circle at 80% 30%,rgba(255,79,216,.25),transparent 28%),
-    radial-gradient(circle at 65% 80%,rgba(54,217,255,.15),transparent 30%),
-    linear-gradient(125deg,#17112f,#0f1021 60%,#1b1025);
-}
-
-.hero-card:after{
-  content:"";
-  position:absolute;
-  width:240px;
-  height:240px;
-  right:-90px;
-  top:-80px;
-  border-radius:50%;
-  background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(255,79,216,.12));
-  filter:blur(2px);
-}
-
-.hero-content{
-  position:relative;
-  z-index:2;
-  max-width:650px;
-}
-
-.badge{
-  display:inline-flex;
-  padding:7px 11px;
-  border-radius:30px;
-  background:rgba(139,92,246,.14);
-  border:1px solid rgba(139,92,246,.28);
-  color:#c4b5fd;
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:14px;
-}
-
-.hero h1{
-  font-size:clamp(32px,7vw,58px);
-  line-height:.98;
-  letter-spacing:-2px;
-  margin-bottom:15px;
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sopheak Top Up</title><style>
+* {
+  box-sizing: border-box;
 }
 
-.gradient{
-  background:linear-gradient(90deg,#a78bfa,#f472e6,#67e8f9);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #070b14;
+  color: #fff;
 }
 
-.hero p{
-  color:#aaa6c0;
-  max-width:560px;
-  line-height:1.65;
-  font-size:14px;
+header {
+  padding: 18px 20px;
+  border-bottom: 1px solid #20283a;
+  background: #0b1020;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.hero-stats{
-  margin-top:22px;
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
+.logo {
+  font-size: 21px;
+  font-weight: 900;
+  color: #62a8ff;
 }
 
-.stat{
-  padding:9px 12px;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.04);
-  border-radius:11px;
-  color:#c6c2d8;
-  font-size:11px;
+.container {
+  width: min(1100px, 92%);
+  margin: auto;
+  padding: 30px 0 60px;
 }
 
-/* MAIN */
-
-.container{
-  max-width:1180px;
-  margin:auto;
-  padding:0 18px 55px;
-}
-
-.section{
-  margin-top:30px;
-}
-
-.section-head{
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:14px;
-}
-
-.section-title{
-  font-size:21px;
-  font-weight:900;
-}
-
-.section-sub{
-  margin-top:4px;
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* SEARCH */
-
-.search-wrap{
-  position:relative;
-  margin-bottom:14px;
-}
-
-.search-icon{
-  position:absolute;
-  left:15px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#77718f;
-}
-
-.search{
-  width:100%;
-  padding:14px 15px 14px 43px;
-  border:1px solid var(--line);
-  outline:none;
-  border-radius:14px;
-  background:#0e0d1b;
-  color:white;
-}
-
-.search::placeholder{
-  color:#68647d;
-}
-
-.search:focus{
-  border-color:#7357d9;
-  box-shadow:0 0 0 3px rgba(139,92,246,.09);
-}
-
-/* GAMES */
-
-.games{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.game{
-  min-height:112px;
-  padding:13px;
-  border:1px solid var(--line);
-  border-radius:17px;
-  background:
-    linear-gradient(145deg,#121021,#0e0d1b);
-  transition:.18s ease;
-  position:relative;
-  overflow:hidden;
-}
-
-.game:hover{
-  transform:translateY(-2px);
-  border-color:#514477;
-}
-
-.game.active{
-  border-color:#8b5cf6;
-  box-shadow:
-    0 0 0 1px #8b5cf6,
-    0 10px 35px rgba(139,92,246,.13);
-}
-
-.game-icon{
-  width:48px;
-  height:48px;
-  display:grid;
-  place-items:center;
-  border-radius:14px;
-  background:
-    linear-gradient(135deg,#292044,#17152b);
-  border:1px solid rgba(255,255,255,.08);
-  font-size:22px;
-  margin-bottom:10px;
-}
-
-.game-name{
-  font-weight:850;
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.hero {
+  padding: 25px 0;
 }
 
-.game-currency{
-  color:#716d87;
-  font-size:10px;
-  margin-top:4px;
+.hero h1 {
+  font-size: clamp(32px, 7vw, 58px);
+  margin: 0 0 12px;
 }
 
-/* PACKAGES */
-
-.package-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.package{
-  padding:15px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:#111020;
-  transition:.18s;
-}
-
-.package:hover{
-  border-color:#514477;
+.hero p {
+  color: #8e9ab2;
 }
 
-.package.active{
-  border-color:#8b5cf6;
-  background:
-    linear-gradient(145deg,#191333,#111020);
-  box-shadow:0 0 0 1px #8b5cf6;
+.search {
+  width: 100%;
+  padding: 15px 17px;
+  border: 1px solid #273149;
+  border-radius: 14px;
+  background: #101726;
+  color: white;
+  outline: none;
+  font-size: 16px;
+  margin: 15px 0 25px;
 }
 
-.package-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:7px;
+.section-title {
+  margin: 25px 0 14px;
+  font-size: 20px;
 }
 
-.diamond{
-  color:#67e8f9;
-  font-size:18px;
+.games {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
 }
 
-.package-name{
-  font-size:13px;
-  font-weight:900;
+.game {
+  padding: 18px;
+  background: #101726;
+  border: 1px solid #273149;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: .2s;
 }
 
-.package-price{
-  color:#ffd86b;
-  font-size:15px;
-  font-weight:900;
-  margin-top:10px;
+.game:hover,
+.game.active {
+  border-color: #4d9cff;
+  background: #121e35;
+  transform: translateY(-2px);
 }
 
-.package-id{
-  color:#5f5a76;
-  font-size:9px;
-  margin-top:5px;
+.game-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #18243b;
+  font-size: 27px;
+  margin-bottom: 12px;
 }
 
-/* ORDER */
-
-.order-layout{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
+.game-name {
+  font-weight: 700;
 }
 
-.panel{
-  border:1px solid var(--line);
-  border-radius:19px;
-  background:#0f0e1c;
-  padding:18px;
+.game-currency {
+  color: #7f8ba2;
+  font-size: 13px;
+  margin-top: 5px;
 }
 
-.panel-title{
-  font-weight:900;
-  margin-bottom:15px;
+.packages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
 }
 
-.selected-box{
-  padding:13px;
-  border-radius:13px;
-  border:1px solid #29253f;
-  background:#131225;
-  color:#9995b2;
-  font-size:12px;
-  line-height:1.6;
-  margin-bottom:15px;
+.package {
+  padding: 18px;
+  border-radius: 15px;
+  border: 1px solid #273149;
+  background: #101726;
+  cursor: pointer;
 }
 
-.selected-box strong{
-  color:#c4b5fd;
+.package:hover,
+.package.active {
+  border-color: #4d9cff;
+  background: #121e35;
 }
 
-label{
-  display:block;
-  margin:12px 0 7px;
-  color:#aaa6bd;
-  font-size:11px;
-  font-weight:700;
+.package-name {
+  font-size: 18px;
+  font-weight: 800;
 }
 
-.input{
-  width:100%;
-  padding:13px;
-  border-radius:12px;
-  border:1px solid #29253f;
-  background:#090815;
-  color:white;
-  outline:none;
+.price {
+  color: #64a9ff;
+  margin-top: 8px;
+  font-weight: 800;
 }
 
-.input:focus{
-  border-color:#7957e6;
+.form {
+  margin-top: 25px;
+  padding: 20px;
+  background: #101726;
+  border: 1px solid #273149;
+  border-radius: 18px;
 }
 
-.confirm{
-  width:100%;
-  margin-top:16px;
-  padding:14px;
-  border:0;
-  border-radius:13px;
-  color:#fff;
-  font-weight:900;
-  background:
-    linear-gradient(100deg,#7048df,#a855f7,#ec4899);
-  box-shadow:0 10px 30px rgba(139,92,246,.2);
+.input {
+  width: 100%;
+  padding: 14px;
+  margin: 7px 0 12px;
+  border: 1px solid #29334a;
+  border-radius: 12px;
+  background: #0b111e;
+  color: white;
+  font-size: 16px;
+  outline: none;
 }
 
-.confirm:disabled{
-  opacity:.55;
-  cursor:not-allowed;
+.button {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 13px;
+  background: #4d9cff;
+  color: white;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
 }
 
-/* RESULT */
-
-.result{
-  display:none;
-  margin-top:15px;
-  border:1px solid rgba(53,230,161,.25);
-  background:rgba(53,230,161,.06);
-  border-radius:17px;
-  padding:17px;
+.button:disabled {
+  opacity: .5;
 }
 
-.result-title{
-  color:#5ff0b8;
-  font-weight:900;
-  margin-bottom:10px;
+.summary {
+  margin-top: 20px;
+  padding: 18px;
+  background: #0b111e;
+  border-radius: 14px;
+  border: 1px solid #273149;
+  display: none;
 }
 
-.result-row{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  padding:7px 0;
-  border-bottom:1px solid rgba(255,255,255,.05);
-  font-size:12px;
-  color:#89859c;
+.result {
+  margin-top: 18px;
+  padding: 18px;
+  background: #0d1829;
+  border: 1px solid #245b91;
+  border-radius: 14px;
+  display: none;
 }
 
-.result-row:last-child{
-  border-bottom:0;
+.muted {
+  color: #8793a9;
 }
 
-.result-row strong{
-  color:#fff;
-  text-align:right;
+.error {
+  color: #ff7272;
+  margin-top: 12px;
 }
-
-/* EMPTY */
 
-.empty{
-  grid-column:1/-1;
-  padding:28px;
-  text-align:center;
-  color:#68647e;
-  border:1px dashed #29253f;
-  border-radius:15px;
+.loading {
+  color: #8fa1bd;
+  padding: 20px 0;
 }
 
-/* FOOTER */
-
-.footer{
-  max-width:1180px;
-  margin:auto;
-  padding:30px 18px 45px;
-  text-align:center;
-  border-top:1px solid rgba(255,255,255,.06);
-  color:#57536d;
-  font-size:11px;
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #66738c;
+  border-top: 1px solid #20283a;
 }
-
-/* DESKTOP */
-
-@media(min-width:650px){
 
-  .games{
-    grid-template-columns:repeat(3,1fr);
+@media(max-width:600px) {
+  .container {
+    width: 94%;
   }
 
-  .package-grid{
-    grid-template-columns:repeat(3,1fr);
+  .games {
+    grid-template-columns: repeat(2, 1fr);
   }
 
+  .packages {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
-
-@media(min-width:900px){
-
-  .games{
-    grid-template-columns:repeat(4,1fr);
-  }
-
-  .package-grid{
-    grid-template-columns:repeat(4,1fr);
-  }
-
-  .order-layout{
-    grid-template-columns:1.15fr .85fr;
-  }
-
-}
-</style>
-</head>
-
-<body>
-
-<header class="header">
-  <nav class="nav">
-
-    <div class="brand">
-      <div class="brand-logo">⚡</div>
-      <div class="brand-name">
-        SOPHEAK <span>TOP UP</span>
-      </div>
-    </div>
-
-    <div class="status">
-      <span class="status-dot"></span>
-      ONLINE
-    </div>
-
-  </nav>
-</header>
-
-
-<section class="hero">
-  <div class="hero-card">
-
-    <div class="hero-content">
-
-      <div class="badge">
-        ⚡ FAST • SIMPLE • SECURE
-      </div>
-
-      <h1>
-        Game Top Up<br>
-        <span class="gradient">Made Simple.</span>
-      </h1>
-
-      <p>
-        Choose your favorite game, select your
-        diamond package and create your order
-        in just a few seconds.
-      </p>
-
-      <div class="hero-stats">
-        <div class="stat">🎮 Multiple Games</div>
-        <div class="stat">💎 Instant Order</div>
-        <div class="stat">🇰🇭 KHR Pricing</div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<main class="container">
-
-
-<section class="section">
-
-  <div class="section-head">
-    <div>
-      <div class="section-title">🎮 Games</div>
-      <div class="section-sub">
-        Select a game to continue
-      </div>
-    </div>
-  </div>
-
-  <div class="search-wrap">
-
-    <span class="search-icon">🔎</span>
-
-    <input
-      id="gameSearch"
-      class="search"
-      type="search"
-      placeholder="Search your game..."
-      autocomplete="off">
-
-  </div>
-
-  <div id="games" class="games">
-
-    <div class="empty">
-      Loading games...
-    </div>
-
-  </div>
-
-</section>
-
-
-<section class="section">
-
-  <div class="section-head">
-    <div>
-      <div class="section-title">💎 Packages</div>
-      <div class="section-sub">
-        Choose your diamond amount
-      </div>
-    </div>
-  </div>
-
-  <div id="packages" class="package-grid">
-
-    <div class="empty">
-      Select a game first.
-    </div>
-
-  </div>
-
-</section>
-
-
-<section class="section">
-
-  <div class="order-layout">
-
-
-    <div class="panel">
-
-      <div class="panel-title">
-        🛒 Order Information
-      </div>
-
-      <div id="selectedBox" class="selected-box">
-        Select a game and package first.
-      </div>
-
-
-      <label for="playerId">
-        Player ID
-      </label>
-
-      <input
-        id="playerId"
-        class="input"
-        type="text"
-        inputmode="numeric"
-        placeholder="Enter Player ID">
-
-
-      <label for="serverId">
-        Server ID
-      </label>
-
-      <input
-        id="serverId"
-        class="input"
-        type="text"
-        inputmode="numeric"
-        placeholder="Enter Server ID">
-
-
-      <button
-        id="confirmBtn"
-        class="confirm">
-
-        CONFIRM ORDER
-
-      </button>
-
-    </div>
-
-
-    <div class="panel">
-
-      <div class="panel-title">
-        📋 Order Summary
-      </div>
-
-      <div class="selected-box">
-
-        <div class="result-row">
-          <span>Game</span>
-          <strong id="summaryGame">—</strong>
-        </div>
-
-        <div class="result-row">
-          <span>Package</span>
-          <strong id="summaryPackage">—</strong>
-        </div>
-
-        <div class="result-row">
-          <span>Price</span>
-          <strong id="summaryPrice">—</strong>
-        </div>
-
-        <div class="result-row">
-          <span>Status</span>
-          <strong>READY</strong>
-        </div>
-
-      </div>
-
-    </div>
-
-
-  </div>
-
-
-  <div id="result" class="result">
-
-    <div class="result-title">
-      ✅ Order Created Successfully
-    </div>
-
-    <div class="result-row">
-      <span>Order ID</span>
-      <strong id="resultOrder">—</strong>
-    </div>
-
-    <div class="result-row">
-      <span>Game</span>
-      <strong id="resultGame">—</strong>
-    </div>
-
-    <div class="result-row">
-      <span>Package</span>
-      <strong id="resultPackage">—</strong>
-    </div>
-
-    <div class="result-row">
-      <span>Price</span>
-      <strong id="resultPrice">—</strong>
-    </div>
-
-    <div class="result-row">
-      <span>Status</span>
-      <strong id="resultStatus">PENDING</strong>
-    </div>
-
-  </div>
-
-</section>
-
-</main>
-
-
-<footer class="footer">
-  ⚡ SOPHEAK TOP UP
-  <br><br>
-  Fast • Simple • Gaming
-</footer>
-
-
-<script>
-
-let games = {};
+</style></head><body><header>
+  <div class="logo">⚡ SOPHEAK TOP UP</div>
+</header><main class="container">  <section class="hero">
+    <h1>Game Top Up<br>Fast & Simple.</h1>
+    <p>Select your game, choose a package and create your order.</p>
+  </section><input
+id="search"
+class="search"
+type="search"
+placeholder="🔎 Search game..."
+
+«»
+
+  <h2 class="section-title">Select Game</h2>  <div id="games" class="games">
+    <div class="loading">Loading games...</div>
+  </div>  <h2 class="section-title">Select Package</h2>  <div id="packages" class="packages">
+    <div class="muted">Select a game first.</div>
+  </div>  <div class="form"><h2>Player Information</h2>
+
+<label>Player ID</label>
+<input
+  id="playerId"
+  class="input"
+  placeholder="Enter Player ID"
+>
+
+<label>Server ID <span class="muted">(optional)</span></label>
+<input
+  id="serverId"
+  class="input"
+  placeholder="Enter Server ID"
+>
+
+<div id="summary" class="summary"></div>
+
+<button id="orderBtn" class="button" disabled>
+  Create Order
+</button>
+
+<div id="error" class="error"></div>
+
+<div id="result" class="result"></div>
+
+  </div></main><footer>
+  © 2026 Sopheak Top Up
+</footer><script>
+
+const API = "/api";
+
+let gamesData = {};
 let selectedGame = null;
 let selectedProduct = null;
 
-
-/* ELEMENTS */
-
-const gamesBox =
-  document.getElementById("games");
-
-const packagesBox =
-  document.getElementById("packages");
-
-const search =
-  document.getElementById("gameSearch");
-
-const selectedBox =
-  document.getElementById("selectedBox");
-
-const confirmBtn =
-  document.getElementById("confirmBtn");
+const gamesEl = document.getElementById("games");
+const packagesEl = document.getElementById("packages");
+const searchEl = document.getElementById("search");
+const playerEl = document.getElementById("playerId");
+const serverEl = document.getElementById("serverId");
+const orderBtn = document.getElementById("orderBtn");
+const summaryEl = document.getElementById("summary");
+const resultEl = document.getElementById("result");
+const errorEl = document.getElementById("error");
 
 
-/* MONEY */
+function gameIcon(name) {
 
-function money(value){
+  const icons = {
+    "Mobile Legends": "⚔️",
+    "Free Fire": "🔥",
+    "PUBG Mobile": "🔫",
+    "Call of Duty Mobile": "🎯"
+  };
 
-  const number = Number(value);
-
-  if(Number.isNaN(number)){
-    return "—";
-  }
-
-  return number.toLocaleString("en-US") + "៛";
-
+  return icons[name] || "🎮";
 }
 
 
-/* ESCAPE */
+function formatPrice(price) {
 
-function escapeHtml(value){
-
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
+  return Number(price).toLocaleString("en-US") + "៛";
 }
 
 
-/* GAME ICON */
+async function loadGames() {
 
-function gameIcon(name){
-
-  const n =
-    String(name).toLowerCase();
-
-  if(n.includes("mobile legends"))
-    return "⚔️";
-
-  if(n.includes("free fire"))
-    return "🔥";
-
-  if(n.includes("pubg"))
-    return "🔫";
-
-  if(n.includes("call of duty"))
-    return "🎯";
-
-  if(n.includes("honor of kings"))
-    return "👑";
-
-  if(n.includes("genshin"))
-    return "✨";
-
-  if(n.includes("honkai"))
-    return "🚂";
-
-  if(n.includes("roblox"))
-    return "🧱";
-
-  if(n.includes("clash"))
-    return "⚔️";
-
-  if(n.includes("wild rift"))
-    return "🌌";
-
-  if(n.includes("arena"))
-    return "🏆";
-
-  return "🎮";
-
-}
-
-
-/* LOAD PRICES */
-
-async function loadPrices(){
-
-  gamesBox.innerHTML =
-    '<div class="empty">Loading games...</div>';
-
-  try{
+  try {
 
     const response =
-      await fetch("/api/prices",{
-        cache:"no-store"
-      });
-
-    if(!response.ok){
-
-      throw new Error(
-        "HTTP " + response.status
-      );
-
-    }
+      await fetch(`${API}/prices`);
 
     const data =
       await response.json();
 
-    if(!data.success){
-
-      throw new Error(
-        data.error || "API error"
-      );
-
+    if (!data.success) {
+      throw new Error("API error");
     }
 
-    games =
-      data.games || {};
+    gamesData = data.games;
 
     renderGames();
 
-  }catch(error){
+  } catch (error) {
+
+    gamesEl.innerHTML =
+      `<div class="error">
+        Failed to load games.
+      </div>`;
 
     console.error(error);
-
-    gamesBox.innerHTML = `
-      <div class="empty">
-        ❌ Unable to load games.<br><br>
-        <small>
-          ${escapeHtml(error.message)}
-        </small>
-      </div>
-    `;
-
   }
-
 }
 
 
-/* RENDER GAMES */
-
-function renderGames(){
+function renderGames(filter = "") {
 
   const query =
-    search.value.trim().toLowerCase();
+    filter.trim().toLowerCase();
 
-  gamesBox.innerHTML = "";
+  gamesEl.innerHTML = "";
 
-  const names =
-    Object.keys(games)
-      .filter(name =>
-        name.toLowerCase().includes(query)
-      );
+  Object.entries(gamesData)
+    .filter(([name]) =>
+      name.toLowerCase().includes(query)
+    )
+    .forEach(([name, game]) => {
+
+      const div =
+        document.createElement("div");
+
+      div.className = "game";
+
+      if (selectedGame === name) {
+        div.classList.add("active");
+      }
+
+      div.innerHTML = `
+        <div class="game-icon">
+          ${gameIcon(name)}
+        </div>
+
+        <div class="game-name">
+          ${name}
+        </div>
+
+        <div class="game-currency">
+          ${game.currency}
+        </div>
+      `;
+
+      div.onclick = () =>
+        selectGame(name);
+
+      gamesEl.appendChild(div);
+    });
 
 
-  if(!names.length){
+  if (!gamesEl.children.length) {
 
-    gamesBox.innerHTML =
-      '<div class="empty">No games found.</div>';
-
-    return;
-
+    gamesEl.innerHTML =
+      `<div class="muted">
+        No game found.
+      </div>`;
   }
-
-
-  names.forEach(name => {
-
-    const game =
-      games[name] || {};
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "game" +
-      (
-        name === selectedGame
-        ? " active"
-        : ""
-      );
-
-
-    card.innerHTML = `
-
-      <div class="game-icon">
-        ${gameIcon(name)}
-      </div>
-
-      <div class="game-name">
-        ${escapeHtml(name)}
-      </div>
-
-      <div class="game-currency">
-        ${escapeHtml(game.currency || "KHR")}
-      </div>
-
-    `;
-
-
-    card.onclick = () => {
-
-      selectedGame = name;
-      selectedProduct = null;
-
-      renderGames();
-      renderPackages();
-      updateSummary();
-
-    };
-
-
-    gamesBox.appendChild(card);
-
-  });
-
-
-  /*
-    Automatically select first game
-    only when nothing is selected.
-  */
-
-  if(!selectedGame && names.length){
-
-    selectedGame = names[0];
-
-    renderGames();
-    renderPackages();
-    updateSummary();
-
-  }
-
 }
 
 
-/* RENDER PACKAGES */
+function selectGame(name) {
 
-function renderPackages(){
+  selectedGame = name;
+  selectedProduct = null;
 
-  packagesBox.innerHTML = "";
+  renderGames(searchEl.value);
+  renderPackages();
+
+  updateSummary();
+}
 
 
-  if(!selectedGame){
+function renderPackages() {
 
-    packagesBox.innerHTML =
-      '<div class="empty">Select a game first.</div>';
+  packagesEl.innerHTML = "";
+
+  if (!selectedGame) {
+
+    packagesEl.innerHTML =
+      `<div class="muted">
+        Select a game first.
+      </div>`;
 
     return;
-
   }
-
 
   const game =
-    games[selectedGame];
+    gamesData[selectedGame];
 
+  game.products.forEach(product => {
 
-  if(!game){
-
-    packagesBox.innerHTML =
-      '<div class="empty">Game data unavailable.</div>';
-
-    return;
-
-  }
-
-
-  const products =
-    Array.isArray(game.products)
-      ? game.products
-      : [];
-
-
-  if(!products.length){
-
-    packagesBox.innerHTML =
-      '<div class="empty">No packages available.</div>';
-
-    return;
-
-  }
-
-
-  products.forEach(product => {
-
-    const card =
+    const div =
       document.createElement("div");
 
-    const active =
+    div.className = "package";
+
+    if (
       selectedProduct &&
-      String(product.id) ===
-      String(selectedProduct.id);
+      selectedProduct.id === product.id
+    ) {
+      div.classList.add("active");
+    }
 
-
-    card.className =
-      "package" +
-      (active ? " active" : "");
-
-
-    card.innerHTML = `
-
-      <div class="package-top">
-
-        <div class="package-name">
-          ${escapeHtml(product.name)}
-        </div>
-
-        <div class="diamond">
-          💎
-        </div>
-
+    div.innerHTML = `
+      <div class="package-name">
+        💎 ${product.name}
       </div>
 
-      <div class="package-price">
-        ${money(product.price)}
+      <div class="price">
+        ${formatPrice(product.price)}
       </div>
-
-      <div class="package-id">
-        ${escapeHtml(product.id)}
-      </div>
-
     `;
 
-
-    card.onclick = () => {
+    div.onclick = () => {
 
       selectedProduct = product;
 
       renderPackages();
       updateSummary();
-
     };
 
-
-    packagesBox.appendChild(card);
-
+    packagesEl.appendChild(div);
   });
-
 }
 
 
-/* SUMMARY */
+function updateSummary() {
 
-function updateSummary(){
+  if (
+    !selectedGame ||
+    !selectedProduct
+  ) {
 
-  const gameName =
-    document.getElementById("summaryGame");
+    summaryEl.style.display = "none";
+    orderBtn.disabled = true;
 
-  const packageName =
-    document.getElementById("summaryPackage");
-
-  const price =
-    document.getElementById("summaryPrice");
-
-
-  gameName.textContent =
-    selectedGame || "—";
-
-
-  packageName.textContent =
-    selectedProduct
-      ? selectedProduct.name
-      : "—";
-
-
-  price.textContent =
-    selectedProduct
-      ? money(selectedProduct.price)
-      : "—";
-
-
-  if(
-    selectedGame &&
-    selectedProduct
-  ){
-
-    selectedBox.innerHTML = `
-      <strong>${escapeHtml(selectedGame)}</strong>
-      <br>
-      💎 ${escapeHtml(selectedProduct.name)}
-      <br>
-      💰 ${money(selectedProduct.price)}
-    `;
-
-  }else{
-
-    selectedBox.textContent =
-      "Select a game and package first.";
-
+    return;
   }
 
+  summaryEl.style.display = "block";
+
+  summaryEl.innerHTML = `
+    <strong>Order Summary</strong>
+
+    <br><br>
+
+    Game:
+    <strong>${selectedGame}</strong>
+
+    <br>
+
+    Package:
+    <strong>${selectedProduct.name}</strong>
+
+    <br>
+
+    Price:
+    <strong>${formatPrice(selectedProduct.price)}</strong>
+  `;
+
+  orderBtn.disabled =
+    playerEl.value.trim().length === 0;
 }
 
 
-/* SEARCH */
+playerEl.addEventListener("input", () => {
 
-search.addEventListener(
-  "input",
-  renderGames
-);
-
-
-/* CONFIRM ORDER */
-
-confirmBtn.addEventListener(
-  "click",
-  async () => {
-
-    if(!selectedGame){
-
-      alert(
-        "Please select a game."
-      );
-
-      return;
-
-    }
+  orderBtn.disabled =
+    !selectedGame ||
+    !selectedProduct ||
+    playerEl.value.trim().length === 0;
+});
 
 
-    if(!selectedProduct){
+searchEl.addEventListener("input", () => {
 
-      alert(
-        "Please select a package."
-      );
-
-      return;
-
-    }
+  renderGames(searchEl.value);
+});
 
 
-    const playerId =
-      document
-        .getElementById("playerId")
-        .value.trim();
+orderBtn.addEventListener("click", async () => {
 
+  errorEl.textContent = "";
+  resultEl.style.display = "none";
 
-    const serverId =
-      document
-        .getElementById("serverId")
-        .value.trim();
+  if (
+    !selectedGame ||
+    !selectedProduct
+  ) {
+    return;
+  }
 
+  const playerId =
+    playerEl.value.trim();
 
-    if(!playerId){
+  const serverId =
+    serverEl.value.trim();
 
-      alert(
-        "Please enter Player ID."
-      );
+  if (!playerId) {
 
-      return;
+    errorEl.textContent =
+      "Please enter Player ID.";
 
-    }
+    return;
+  }
 
+  orderBtn.disabled = true;
+  orderBtn.textContent = "Creating Order...";
 
-    confirmBtn.disabled = true;
+  try {
 
-    confirmBtn.textContent =
-      "CREATING ORDER...";
+    const response =
+      await fetch(`${API}/orders`, {
 
+        method: "POST",
 
-    try{
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      const response =
-        await fetch(
-          "/api/orders",
-          {
-            method:"POST",
+        body: JSON.stringify({
 
-            headers:{
-              "Content-Type":
-                "application/json"
-            },
+          game: selectedGame,
 
-            body:JSON.stringify({
+          productId:
+            selectedProduct.id,
 
-              game:
-                selectedGame,
+          playerId,
 
-              productId:
-                selectedProduct.id,
-
-              playerId:
-                playerId,
-
-              serverId:
-                serverId
-
-            })
-
-          }
-        );
-
-
-      const data =
-        await response.json();
-
-
-      if(!response.ok ||
-         !data.success){
-
-        throw new Error(
-          data.error ||
-          data.message ||
-          "Order failed"
-        );
-
-      }
-
-
-      const order =
-        data.order || {};
-
-
-      document
-        .getElementById("resultOrder")
-        .textContent =
-        order.orderId || "—";
-
-
-      document
-        .getElementById("resultGame")
-        .textContent =
-        order.game ||
-        selectedGame;
-
-
-      document
-        .getElementById("resultPackage")
-        .textContent =
-        order.productName ||
-        selectedProduct.name;
-
-
-      document
-        .getElementById("resultPrice")
-        .textContent =
-        money(
-          order.price ??
-          selectedProduct.price
-        );
-
-
-      document
-        .getElementById("resultStatus")
-        .textContent =
-        order.status ||
-        "PENDING";
-
-
-      const result =
-        document.getElementById(
-          "result"
-        );
-
-
-      result.style.display =
-        "block";
-
-
-      result.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
+          serverId
+        })
       });
 
 
-    }catch(error){
+    const data =
+      await response.json();
 
-      console.error(error);
 
-      alert(
-        "Order failed: " +
-        error.message
+    if (!response.ok ||
+        !data.success) {
+
+      throw new Error(
+        data.error ||
+        "Unable to create order"
       );
-
-    }finally{
-
-      confirmBtn.disabled =
-        false;
-
-      confirmBtn.textContent =
-        "CONFIRM ORDER";
-
     }
 
-  }
-);
+
+    const order =
+      data.order;
 
 
-/* START */
+    resultEl.style.display = "block";
 
-loadPrices();
+    resultEl.innerHTML = `
+      <strong>✅ Order Created</strong>
 
-</script>
+      <br><br>
 
-</body>
-</html>
+      Order ID:
+      <strong>${order.orderId}</strong>
 
-<script>
-const API = "/api";
+      <br>
 
-async function loadTopUpGames() {
-  try {
-    const res = await fetch(`${API}/prices`);
-    const data = await res.json();
+      Game:
+      ${order.game}
 
-    if (!data.success) throw new Error("Failed to load games");
+      <br>
 
-    console.log("Sopheak Top Up games:", data.games);
+      Package:
+      ${order.productName}
 
-    // Make available to your UI
-    window.SOPHEAK_GAMES = data.games;
+      <br>
+
+      Price:
+      ${formatPrice(order.price)}
+
+      <br>
+
+      Player ID:
+      ${order.playerId}
+
+      <br><br>
+
+      Status:
+      <strong>${order.status}</strong>
+
+      <br><br>
+
+      Payment is currently
+      <strong>pending</strong>.
+    `;
+
 
   } catch (error) {
-    console.error("Failed to load games:", error);
+
+    errorEl.textContent =
+      error.message;
+
+  } finally {
+
+    orderBtn.disabled = false;
+    orderBtn.textContent =
+      "Create Order";
+
   }
-}
 
-async function createTopUpOrder(game, productId, playerId, serverId = "") {
-  const res = await fetch(`${API}/orders`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      game,
-      productId,
-      playerId,
-      serverId
-    })
-  });
+});
 
-  return await res.json();
-}
 
-loadTopUpGames();
-</script>      
+loadGames();
+
+</script></body>
+</html>
