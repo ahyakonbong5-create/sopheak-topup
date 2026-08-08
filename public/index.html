@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sopheak Top Up</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: white;
+    }
+
+    header {
+      padding: 28px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #6c5ce7, #00cec9);
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    #search {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .game {
+      background: #151b30;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid #293252;
+    }
+
+    .game h2 {
+      color: #74b9ff;
+      margin-top: 0;
+    }
+
+    .package {
+      margin-top: 10px;
+      padding: 13px;
+      background: #202842;
+      border-radius: 10px;
+    }
+
+    .package-name {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      color: #55efc4;
+      font-weight: bold;
+    }
+
+    .buy-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #6c5ce7, #00cec9);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .buy-btn:active {
+      transform: scale(0.98);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 420px;
+      background: #151b30;
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid #293252;
+    }
+
+    .modal-box h2 {
+      margin-top: 0;
+      color: #74b9ff;
+    }
+
+    .modal-box input {
+      width: 100%;
+      padding: 13px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 9px;
+      font-size: 15px;
+    }
+
+    .confirm-btn {
+      width: 100%;
+      padding: 13px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 9px;
+      background: #00b894;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      width: 100%;
+      padding: 11px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 9px;
+      background: #d63031;
+      color: white;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #202842;
+      display: none;
+    }
+
+    .success {
+      color: #55efc4;
+    }
+
+    .error {
+      color: #ff7675;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔥 Sopheak Top Up</h1>
+  <p>Fast • Simple • Game Top Up</p>
+</header>
+
+<div class="container">
+
+  <input
+    id="search"
+    type="text"
+    placeholder="🔎 Search game..."
+  >
+
+  <div id="games" class="games">
+    Loading...
+  </div>
+
+</div>
+
+<!-- BUY MODAL -->
+
+<div id="buyModal" class="modal">
+
+  <div class="modal-box">
+
+    <h2>🛒 Buy Top Up</h2>
+
+    <p id="selectedGame"></p>
+    <p id="selectedProduct"></p>
+
+    <input
+      id="playerId"
+      type="text"
+      placeholder="Player ID"
+    >
+
+    <input
+      id="serverId"
+      type="text"
+      placeholder="Server ID (optional)"
+    >
+
+    <button
+      class="confirm-btn"
+      onclick="confirmOrder()"
+    >
+      ✅ CONFIRM ORDER
+    </button>
+
+    <button
+      class="close-btn"
+      onclick="closeModal()"
+    >
+      Cancel
+    </button>
+
+    <div id="result" class="result"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+let allGames = {};
+let selectedGame = "";
+let selectedProduct = null;
+
+async function loadGames() {
+
+  try {
+
+    const response = await fetch("/api/prices");
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error("Failed to load prices");
+    }
+
+    allGames = data.games;
+
+    renderGames(allGames);
+
+  } catch (error) {
+
+    document.getElementById("games").innerHTML =
+      `<p class="error">❌ Failed to load games.</p>`;
+
+    console.error(error);
+  }
+}
+
+
+function renderGames(games) {
+
+  const container = document.getElementById("games");
+
+  container.innerHTML = "";
+
+  Object.entries(games).forEach(([name, game]) => {
+
+    const card = document.createElement("div");
+
+    card.className = "game";
+
+    let packages = "";
+
+    game.products.forEach(product => {
+
+      packages += `
+
+        <div class="package">
+
+          <span class="package-name">
+            ${product.name}
+          </span>
+
+          <span class="price">
+            ${product.price.toLocaleString()}៛
+          </span>
+
+          <button
+            class="buy-btn"
+            onclick='openBuyModal(${JSON.stringify(name)}, ${JSON.stringify(product)})'
+          >
+            🛒 BUY NOW
+          </button>
+
+        </div>
+
+      `;
+    });
+
+    card.innerHTML = `
+
+      <h2>🎮 ${name}</h2>
+
+      <p>
+        Currency: ${game.currency}
+      </p>
+
+      ${packages}
+
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+
+function openBuyModal(gameName, product) {
+
+  selectedGame = gameName;
+  selectedProduct = product;
+
+  document.getElementById("selectedGame").textContent =
+    `🎮 Game: ${gameName}`;
+
+  document.getElementById("selectedProduct").textContent =
+    `💎 ${product.name} — ${product.price.toLocaleString()}៛`;
+
+  document.getElementById("playerId").value = "";
+  document.getElementById("serverId").value = "";
+
+  document.getElementById("result").style.display = "none";
+
+  document.getElementById("buyModal").style.display = "flex";
+}
+
+
+function closeModal() {
+
+  document.getElementById("buyModal").style.display = "none";
+}
+
+
+async function confirmOrder() {
+
+  const playerId =
+    document.getElementById("playerId").value.trim();
+
+  const serverId =
+    document.getElementById("serverId").value.trim();
+
+  const result =
+    document.getElementById("result");
+
+  if (!playerId) {
+
+    result.style.display = "block";
+
+    result.innerHTML =
+      `<span class="error">❌ Please enter Player ID.</span>`;
+
+    return;
+  }
+
+  result.style.display = "block";
+
+  result.innerHTML =
+    `<span>⏳ Creating order...</span>`;
+
+  try {
+
+    const response = await fetch("/api/orders", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+
+        game: selectedGame,
+
+        productId: selectedProduct.id,
+
+        playerId: playerId,
+
+        serverId: serverId || null
+
+      })
+
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+
+      throw new Error(
+        data.error || "Order failed"
+      );
+
+    }
+
+    result.innerHTML = `
+
+      <span class="success">
+
+        ✅ Order Created
+
+        <br><br>
+
+        <strong>
+          Order ID:
+        </strong>
+
+        ${data.order.orderId}
+
+        <br>
+
+        <strong>
+          Status:
+        </strong>
+
+        ${data.order.status}
+
+      </span>
+
+    `;
+
+  } catch (error) {
+
+    result.innerHTML = `
+
+      <span class="error">
+
+        ❌ ${error.message}
+
+      </span>
+
+    `;
+
+  }
+}
+
+
+document
+  .getElementById("search")
+  .addEventListener("input", function () {
+
+    const query =
+      this.value.toLowerCase();
+
+    const filtered =
+      Object.fromEntries(
+
+        Object.entries(allGames)
+          .filter(([name]) =>
+            name.toLowerCase().includes(query)
+          )
+
+      );
+
+    renderGames(filtered);
+  });
+
+
+loadGames();
+
+</script>
+
+</body>
+</html>
