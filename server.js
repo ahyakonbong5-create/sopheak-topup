@@ -1,374 +1,513 @@
 const express = require("express");
+const path = require("path");
+const crypto = require("crypto");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+const PORT = process.env.PORT || 10000;
 
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
-// =========================
-// GAMES & PRODUCTS
-// =========================
+/*
+|--------------------------------------------------------------------------
 
-const games = {
-  "Mobile Legends": {
-    currency: "Diamonds",
-    products: [
-      { id: "ml_11", name: "11 Diamonds", price: 1000 },
-      { id: "ml_56", name: "56 Diamonds", price: 4000 },
-      { id: "ml_112", name: "112 Diamonds", price: 8000 },
-      { id: "ml_223", name: "223 Diamonds", price: 15000 },
-      { id: "ml_336", name: "336 Diamonds", price: 22000 },
-      { id: "ml_weekly", name: "Weekly Pass", price: 7000 },
-      { id: "ml_monthly", name: "Monthly Pass", price: 30000 }
-    ]
-  },
+Static website
+*/
 
-  "Free Fire": {
-    currency: "Diamonds",
-    products: [
-      { id: "ff_100", name: "100 Diamonds", price: 2000 },
-      { id: "ff_310", name: "310 Diamonds", price: 6000 },
-      { id: "ff_520", name: "520 Diamonds", price: 10000 },
-      { id: "ff_1060", name: "1060 Diamonds", price: 19000 },
-      { id: "ff_2180", name: "2180 Diamonds", price: 38000 },
-      { id: "ff_weekly", name: "Weekly Membership", price: 7000 },
-      { id: "ff_monthly", name: "Monthly Membership", price: 30000 }
-    ]
-  },
+app.use(express.static(path.join(__dirname, "public")));
 
-  "PUBG Mobile": {
-    currency: "UC",
-    products: [
-      { id: "pubg_60", name: "60 UC", price: 4000 },
-      { id: "pubg_325", name: "325 UC", price: 20000 },
-      { id: "pubg_660", name: "660 UC", price: 40000 },
-      { id: "pubg_1800", name: "1800 UC", price: 105000 },
-      { id: "pubg_3850", name: "3850 UC", price: 210000 },
-      { id: "pubg_8100", name: "8100 UC", price: 420000 }
-    ]
-  },
+/*
+|--------------------------------------------------------------------------
 
-  "Honor of Kings": {
-    currency: "Tokens",
-    products: [
-      { id: "hok_80", name: "80 Tokens", price: 2000 },
-      { id: "hok_240", name: "240 Tokens", price: 6000 },
-      { id: "hok_400", name: "400 Tokens", price: 10000 },
-      { id: "hok_800", name: "800 Tokens", price: 20000 },
-      { id: "hok_1200", name: "1200 Tokens", price: 30000 }
-    ]
-  },
+Game + Diamond packages
 
-  "Call of Duty Mobile": {
-    currency: "CP",
-    products: [
-      { id: "cod_80", name: "80 CP", price: 4000 },
-      { id: "cod_420", name: "420 CP", price: 20000 },
-      { id: "cod_880", name: "880 CP", price: 40000 },
-      { id: "cod_2400", name: "2400 CP", price: 105000 },
-      { id: "cod_5000", name: "5000 CP", price: 210000 }
-    ]
-  },
+|
+| IMPORTANT:
+| Replace these packages with your actual authorized prices/products.
+|
+*/
 
-  "Arena of Valor": {
-    currency: "Vouchers",
-    products: [
-      { id: "aov_100", name: "100 Vouchers", price: 3000 },
-      { id: "aov_300", name: "300 Vouchers", price: 8000 },
-      { id: "aov_600", name: "600 Vouchers", price: 15000 },
-      { id: "aov_1200", name: "1200 Vouchers", price: 30000 }
-    ]
-  },
+const GAMES = {
+"Mobile Legends": {
+currency: "Diamonds",
+products: [
+{ id: "ml-86", name: "86 Diamonds", price: 5000 },
+{ id: "ml-172", name: "172 Diamonds", price: 9500 },
+{ id: "ml-257", name: "257 Diamonds", price: 14000 },
+{ id: "ml-344", name: "344 Diamonds", price: 18500 },
+{ id: "ml-429", name: "429 Diamonds", price: 22500 },
+{ id: "ml-514", name: "514 Diamonds", price: 27000 }
+]
+},
 
-  "Genshin Impact": {
-    currency: "Genesis Crystals",
-    products: [
-      { id: "genshin_60", name: "60 Crystals", price: 5000 },
-      { id: "genshin_300", name: "300 Crystals", price: 22000 },
-      { id: "genshin_980", name: "980 Crystals", price: 65000 },
-      { id: "genshin_1980", name: "1980 Crystals", price: 130000 },
-      { id: "genshin_3280", name: "3280 Crystals", price: 210000 },
-      { id: "genshin_6480", name: "6480 Crystals", price: 420000 },
-      { id: "genshin_welkin", name: "Blessing of the Welkin Moon", price: 22000 }
-    ]
-  },
+"Free Fire": {
+currency: "Diamonds",
+products: [
+{ id: "ff-100", name: "100 Diamonds", price: 5000 },
+{ id: "ff-310", name: "310 Diamonds", price: 14000 },
+{ id: "ff-520", name: "520 Diamonds", price: 22000 },
+{ id: "ff-1060", name: "1060 Diamonds", price: 42000 }
+]
+},
 
-  "Honkai Star Rail": {
-    currency: "Oneiric Shards",
-    products: [
-      { id: "hsr_60", name: "60 Shards", price: 5000 },
-      { id: "hsr_300", name: "300 Shards", price: 22000 },
-      { id: "hsr_980", name: "980 Shards", price: 65000 },
-      { id: "hsr_1980", name: "1980 Shards", price: 130000 },
-      { id: "hsr_3280", name: "3280 Shards", price: 210000 },
-      { id: "hsr_6480", name: "6480 Shards", price: 420000 },
-      { id: "hsr_pass", name: "Express Supply Pass", price: 22000 }
-    ]
-  },
+"PUBG Mobile": {
+currency: "UC",
+products: [
+{ id: "pubg-60", name: "60 UC", price: 5000 },
+{ id: "pubg-325", name: "325 UC", price: 24000 },
+{ id: "pubg-660", name: "660 UC", price: 47000 },
+{ id: "pubg-1800", name: "1800 UC", price: 120000 }
+]
+},
 
-  "Zenless Zone Zero": {
-    currency: "Monochromes",
-    products: [
-      { id: "zzz_60", name: "60 Monochromes", price: 5000 },
-      { id: "zzz_300", name: "300 Monochromes", price: 22000 },
-      { id: "zzz_980", name: "980 Monochromes", price: 65000 },
-      { id: "zzz_1980", name: "1980 Monochromes", price: 130000 },
-      { id: "zzz_3280", name: "3280 Monochromes", price: 210000 },
-      { id: "zzz_6480", name: "6480 Monochromes", price: 420000 },
-      { id: "zzz_membership", name: "Inter-Knot Membership", price: 22000 }
-    ]
-  },
-
-  "Roblox": {
-    currency: "Robux",
-    products: [
-      { id: "robux_80", name: "80 Robux", price: 5000 },
-      { id: "robux_400", name: "400 Robux", price: 22000 },
-      { id: "robux_800", name: "800 Robux", price: 42000 },
-      { id: "robux_1700", name: "1700 Robux", price: 85000 },
-      { id: "robux_4500", name: "4500 Robux", price: 210000 }
-    ]
-  },
-
-  "Wild Rift": {
-    currency: "Wild Cores",
-    products: [
-      { id: "wr_425", name: "425 Wild Cores", price: 10000 },
-      { id: "wr_1000", name: "1000 Wild Cores", price: 22000 },
-      { id: "wr_1850", name: "1850 Wild Cores", price: 40000 },
-      { id: "wr_3750", name: "3750 Wild Cores", price: 80000 }
-    ]
-  },
-
-  "Clash of Clans": {
-    currency: "Gems",
-    products: [
-      { id: "coc_80", name: "80 Gems", price: 3000 },
-      { id: "coc_500", name: "500 Gems", price: 15000 },
-      { id: "coc_1200", name: "1200 Gems", price: 30000 },
-      { id: "coc_2500", name: "2500 Gems", price: 60000 },
-      { id: "coc_6500", name: "6500 Gems", price: 150000 }
-    ]
-  }
+"Call of Duty Mobile": {
+currency: "CP",
+products: [
+{ id: "cod-80", name: "80 CP", price: 6000 },
+{ id: "cod-420", name: "420 CP", price: 28000 },
+{ id: "cod-880", name: "880 CP", price: 55000 }
+]
+}
 };
 
-// =========================
-// ORDERS
-// =========================
+/*
+|--------------------------------------------------------------------------
 
-const orders = [];
+In-memory orders
 
-function generateOrderId() {
-  const number = String(orders.length + 1).padStart(5, "0");
-  return `SOP-${Date.now()}-${number}`;
+|
+| This is suitable for testing the backend.
+| For production, use a real database such as PostgreSQL.
+|
+*/
+
+const orders = new Map();
+
+/*
+|--------------------------------------------------------------------------
+
+Helpers
+*/
+
+function createOrderId() {
+return (
+"SP" +
+Date.now().toString(36).toUpperCase() +
+crypto.randomBytes(3).toString("hex").toUpperCase()
+);
 }
 
-// =========================
-// API STATUS
-// =========================
+function findGame(gameName) {
+return GAMES[gameName];
+}
 
-app.get("/api/status", (req, res) => {
-  res.json({
-    success: true,
-    service: "Sopheak Top Up",
-    status: "online",
-    games: Object.keys(games).length,
-    orders: orders.length
-  });
-});
+function findProduct(gameName, productId) {
+const game = findGame(gameName);
 
-// =========================
-// PRICES
-// =========================
+if (!game) {
+return null;
+}
 
-app.get("/api/prices", (req, res) => {
-  res.json({
-    success: true,
-    service: "Sopheak Top Up",
-    currency: "KHR",
-    games
-  });
-});
+return game.products.find(
+product => String(product.id) === String(productId)
+);
+}
 
-// =========================
-// SINGLE GAME
-// =========================
+/*
+|--------------------------------------------------------------------------
 
-app.get("/api/prices/:game", (req, res) => {
-  const game = games[req.params.game];
-
-  if (!game) {
-    return res.status(404).json({
-      success: false,
-      error: "Game not found"
-    });
-  }
-
-  res.json({
-    success: true,
-    game: req.params.game,
-    currency: game.currency,
-    products: game.products
-  });
-});
-
-// =========================
-// CREATE ORDER
-// =========================
-
-app.post("/api/orders", (req, res) => {
-  const {
-    game,
-    productId,
-    playerId,
-    serverId
-  } = req.body;
-
-  if (!game || !productId || !playerId) {
-    return res.status(400).json({
-      success: false,
-      error: "game, productId and playerId are required"
-    });
-  }
-
-  const selectedGame = games[game];
-
-  if (!selectedGame) {
-    return res.status(404).json({
-      success: false,
-      error: "Game not found"
-    });
-  }
-
-  const product = selectedGame.products.find(
-    item => item.id === productId
-  );
-
-  if (!product) {
-    return res.status(404).json({
-      success: false,
-      error: "Product not found"
-    });
-  }
-
-  const order = {
-    orderId: generateOrderId(),
-    game,
-    productId: product.id,
-    productName: product.name,
-    currency: selectedGame.currency,
-    price: product.price,
-    playerId: String(playerId),
-    serverId: serverId ? String(serverId) : null,
-    status: "PENDING",
-    createdAt: new Date().toISOString()
-  };
-
-  orders.push(order);
-
-  res.status(201).json({
-    success: true,
-    message: "Order created successfully",
-    order
-  });
-});
-
-// =========================
-// GET ORDERS
-// =========================
-
-app.get("/api/orders", (req, res) => {
-  res.json({
-    success: true,
-    count: orders.length,
-    orders
-  });
-});
-
-// =========================
-// GET ONE ORDER
-// =========================
-
-app.get("/api/orders/:orderId", (req, res) => {
-  const order = orders.find(
-    item => item.orderId === req.params.orderId
-  );
-
-  if (!order) {
-    return res.status(404).json({
-      success: false,
-      error: "Order not found"
-    });
-  }
-
-  res.json({
-    success: true,
-    order
-  });
-});
-
-// =========================
-// UPDATE ORDER STATUS
-// =========================
-
-app.patch("/api/orders/:orderId/status", (req, res) => {
-  const { status } = req.body;
-
-  const allowedStatuses = [
-    "PENDING",
-    "PROCESSING",
-    "COMPLETED",
-    "CANCELLED"
-  ];
-
-  if (!allowedStatuses.includes(status)) {
-    return res.status(400).json({
-      success: false,
-      error: "Invalid status",
-      allowedStatuses
-    });
-  }
-
-  const order = orders.find(
-    item => item.orderId === req.params.orderId
-  );
-
-  if (!order) {
-    return res.status(404).json({
-      success: false,
-      error: "Order not found"
-    });
-  }
-
-  order.status = status;
-  order.updatedAt = new Date().toISOString();
-
-  res.json({
-    success: true,
-    message: "Order status updated",
-    order
-  });
-});
-
-// =========================
-// HEALTH
-// =========================
+Health check
+*/
 
 app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    server: "Sopheak Top Up",
-    status: "healthy"
-  });
+res.json({
+success: true,
+service: "Sopheak Top Up",
+status: "online",
+games: Object.keys(GAMES).length,
+orders: orders.size
+});
 });
 
-// =========================
-// START SERVER
-// =========================
+/*
+|--------------------------------------------------------------------------
+
+Prices API
+
+|
+| V3 index.html uses this endpoint.
+|
+*/
+
+app.get("/api/prices", (req, res) => {
+res.json({
+success: true,
+games: GAMES
+});
+});
+
+/*
+|--------------------------------------------------------------------------
+
+Create Order
+
+|
+| POST /api/orders
+|
+| Body:
+|
+| {
+|   game: "Mobile Legends",
+|   productId: "ml-86",
+|   playerId: "123456",
+|   serverId: "1234"
+| }
+|
+*/
+
+app.post("/api/orders", (req, res) => {
+try {
+const {
+game,
+productId,
+playerId,
+serverId
+} = req.body || {};
+
+if (!game) {
+  return res.status(400).json({
+    success: false,
+    error: "Game is required"
+  });
+}
+
+
+if (!productId) {
+  return res.status(400).json({
+    success: false,
+    error: "Product is required"
+  });
+}
+
+
+if (!playerId) {
+  return res.status(400).json({
+    success: false,
+    error: "Player ID is required"
+  });
+}
+
+
+const product =
+  findProduct(game, productId);
+
+
+if (!product) {
+  return res.status(400).json({
+    success: false,
+    error: "Invalid game or product"
+  });
+}
+
+
+const orderId =
+  createOrderId();
+
+
+const order = {
+  orderId,
+
+  game,
+
+  productId: product.id,
+
+  productName: product.name,
+
+  price: product.price,
+
+  playerId: String(playerId),
+
+  serverId:
+    serverId
+      ? String(serverId)
+      : "",
+
+  status: "PAYMENT_PENDING",
+
+  paymentStatus: "PENDING",
+
+  topupStatus: "NOT_STARTED",
+
+  createdAt:
+    new Date().toISOString(),
+
+  updatedAt:
+    new Date().toISOString()
+};
+
+
+orders.set(orderId, order);
+
+
+console.log(
+  `[ORDER] ${orderId} ${game} ${product.name}`
+);
+
+
+return res.status(201).json({
+  success: true,
+  order
+});
+
+} catch (error) {
+
+console.error(
+  "[CREATE ORDER ERROR]",
+  error
+);
+
+return res.status(500).json({
+  success: false,
+  error: "Unable to create order"
+});
+
+}
+});
+
+/*
+|--------------------------------------------------------------------------
+
+Get Order
+
+|
+| GET /api/orders/:id
+|
+*/
+
+app.get("/api/orders/:id", (req, res) => {
+
+const order =
+orders.get(req.params.id);
+
+if (!order) {
+return res.status(404).json({
+success: false,
+error: "Order not found"
+});
+}
+
+return res.json({
+success: true,
+order
+});
+
+});
+
+/*
+|--------------------------------------------------------------------------
+
+Payment Creation Integration Point
+
+|
+| This endpoint DOES NOT fake a successful payment.
+|
+| Connect your authorized payment provider here.
+|
+*/
+
+app.post("/api/payment/create", (req, res) => {
+
+const { orderId } =
+req.body || {};
+
+const order =
+orders.get(orderId);
+
+if (!order) {
+return res.status(404).json({
+success: false,
+error: "Order not found"
+});
+}
+
+if (
+order.paymentStatus ===
+"PAID"
+) {
+return res.json({
+success: true,
+message: "Order already paid",
+order
+});
+}
+
+/*
+
+* TODO:
+* 
+* Call your authorized payment provider here.
+* 
+* Example flow:
+* 
+* 1. Send order amount to provider
+* 2. Receive checkout/payment URL
+* 3. Return URL to frontend
+* 
+* Never put PAYMENT_SECRET in index.html.
+  */
+
+return res.status(501).json({
+success: false,
+error:
+"Payment provider is not connected yet"
+});
+
+});
+
+/*
+|--------------------------------------------------------------------------
+
+Payment Webhook
+
+|
+| Your authorized payment provider should call this endpoint after
+| successfully verifying a payment.
+|
+| IMPORTANT:
+| Verify the provider's webhook signature before marking an order PAID.
+|
+*/
+
+app.post("/api/payment/webhook", (req, res) => {
+
+/*
+
+* TODO:
+* 
+* 1. Verify webhook signature
+* 2. Verify transaction/order ID
+* 3. Verify amount
+* 4. Verify currency
+* 5. Mark order as PAID
+* 6. Start authorized top-up process
+     */
+
+return res.status(501).json({
+success: false,
+error:
+"Payment webhook provider is not connected yet"
+});
+
+});
+
+/*
+|--------------------------------------------------------------------------
+
+Top-up Integration Point
+
+|
+| This endpoint deliberately does NOT claim that diamonds were delivered.
+|
+| Once you have an authorized top-up provider/API, connect it here.
+|
+*/
+
+app.post("/api/topup", (req, res) => {
+
+const { orderId } =
+req.body || {};
+
+const order =
+orders.get(orderId);
+
+if (!order) {
+return res.status(404).json({
+success: false,
+error: "Order not found"
+});
+}
+
+if (
+order.paymentStatus !==
+"PAID"
+) {
+return res.status(400).json({
+success: false,
+error:
+"Payment has not been verified"
+});
+}
+
+/*
+
+* TODO:
+* 
+* Call an authorized game top-up provider here.
+* 
+* Do NOT directly attempt to access game accounts.
+  */
+
+return res.status(501).json({
+success: false,
+error:
+"Top-up provider is not connected yet"
+});
+
+});
+
+/*
+|--------------------------------------------------------------------------
+
+Admin price API
+
+|
+| Price updates should eventually be protected by authentication
+| and stored in a database.
+|
+| This endpoint is intentionally disabled until proper authentication
+| and persistent storage are added.
+|
+*/
+
+app.post("/api/admin/prices", (req, res) => {
+
+return res.status(501).json({
+success: false,
+error:
+"Admin price management is not enabled yet"
+});
+
+});
+
+/*
+|--------------------------------------------------------------------------
+
+SPA fallback
+*/
+
+app.get("/*splat", (req, res) => {
+
+res.sendFile(
+path.join(
+__dirname,
+"public",
+"index.html"
+)
+);
+
+});
+
+/*
+|--------------------------------------------------------------------------
+
+Start server
+*/
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(
-    `Sopheak Top Up running on port ${PORT}`
-  );
+
+console.log(
+"Sopheak Top Up running on port ${PORT}"
+);
+
 });
