@@ -587,3 +587,529 @@ buy.addEventListener("click", async () => {
 
 </script></body>
 </html>
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sopheak Top Up V2</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Arial,sans-serif;
+background:#070b16;color:#fff;min-height:100vh
+}
+header{
+position:sticky;top:0;z-index:20;
+background:rgba(7,11,22,.95);
+border-bottom:1px solid #1d2945;
+backdrop-filter:blur(12px)
+}
+.nav{
+max-width:1100px;margin:auto;padding:0 18px;
+height:64px;display:flex;align-items:center;
+justify-content:space-between
+}
+.logo{font-weight:900;font-size:20px;color:#58e7ff}
+.online{
+font-size:12px;color:#55ffb0;
+background:#102a22;border:1px solid #205443;
+padding:7px 12px;border-radius:30px
+}
+.hero{
+padding:38px 18px;
+background:
+radial-gradient(circle at 85% 10%,#24508d,transparent 35%),
+linear-gradient(135deg,#0d1730,#070b16)
+}
+.hero-inner{max-width:1100px;margin:auto}
+.hero h1{font-size:38px;line-height:1.1;margin-bottom:12px}
+.hero p{color:#aebbd5;line-height:1.6;max-width:650px}
+.container{max-width:1100px;margin:auto;padding:0 18px 50px}
+.section{margin-top:28px}
+.title{font-size:22px;margin-bottom:15px}
+.title span{color:#58e7ff}
+
+.search{
+width:100%;padding:14px 16px;
+background:#0d1528;border:1px solid #263656;
+border-radius:13px;color:#fff;
+outline:none;margin-bottom:15px;font-size:14px
+}
+.search:focus{border-color:#58e7ff}
+
+.games{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px
+}
+.game{
+padding:15px;background:#0e1527;
+border:1px solid #202d4b;border-radius:15px;
+cursor:pointer;transition:.18s
+}
+.game:hover{transform:translateY(-2px)}
+.game.active{
+border-color:#58e7ff;
+background:#10243a;
+box-shadow:0 0 0 1px #58e7ff
+}
+.game-icon{
+width:45px;height:45px;border-radius:13px;
+display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#1b79ff,#694cff);
+font-size:21px;margin-bottom:10px
+}
+.game-name{font-weight:800;font-size:14px}
+.game-currency{font-size:12px;color:#8492ad;margin-top:5px}
+
+.packages{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:11px
+}
+.package{
+padding:17px;background:#0e1527;
+border:1px solid #202d4b;border-radius:15px;
+cursor:pointer;transition:.18s
+}
+.package.active{
+border-color:#58e7ff;
+background:#10243a;
+box-shadow:0 0 0 1px #58e7ff
+}
+.package-name{font-weight:800;font-size:15px}
+.package-price{
+color:#ffd75e;font-weight:900;
+margin-top:10px;font-size:16px
+}
+.package-id{
+font-size:10px;color:#687791;margin-top:6px
+}
+
+.order{
+margin-top:28px;padding:20px;
+background:#0d1425;
+border:1px solid #243352;
+border-radius:18px
+}
+.selected{
+padding:14px;background:#101c31;
+border:1px solid #263957;
+border-radius:11px;
+color:#aebbd4;margin-bottom:18px
+}
+.selected strong{color:#58e7ff}
+label{
+display:block;color:#b5c2db;
+font-size:13px;margin:13px 0 7px
+}
+input{
+width:100%;padding:14px;
+background:#070c18;color:#fff;
+border:1px solid #293858;
+border-radius:11px;outline:none
+}
+input:focus{border-color:#58e7ff}
+button{
+border:0;cursor:pointer
+}
+.buy{
+width:100%;padding:15px;margin-top:18px;
+border-radius:12px;color:#fff;
+font-weight:900;
+background:linear-gradient(90deg,#18d5ff,#6376ff)
+}
+.buy:disabled{opacity:.5}
+
+.result{
+display:none;margin-top:18px;padding:18px;
+background:#0c211b;border:1px solid #24634d;
+border-radius:15px
+}
+.success{color:#55ffb0;font-weight:900;margin-bottom:10px}
+.row{
+display:flex;justify-content:space-between;
+padding:7px 0;color:#9eacc5;font-size:13px
+}
+.row strong{color:#fff}
+
+.empty{
+padding:25px;text-align:center;
+color:#77859e;background:#0d1527;
+border:1px solid #202d4b;border-radius:15px
+}
+
+footer{
+padding:35px 18px;text-align:center;
+color:#56647f;border-top:1px solid #151f36;
+font-size:12px
+}
+
+@media(min-width:700px){
+.games{grid-template-columns:repeat(4,1fr)}
+.packages{grid-template-columns:repeat(4,1fr)}
+.hero h1{font-size:50px}
+}
+</style></head><body><header>
+<div class="nav">
+<div class="logo">⚡ SOPHEAK TOP UP</div>
+<div class="online">● ONLINE</div>
+</div>
+</header><section class="hero">
+<div class="hero-inner">
+<h1>Game Top Up<br>Fast & Simple.</h1>
+<p>
+Choose a game, select your package,
+enter your player information and create
+your order.
+</p>
+</div>
+</section><main class="container"><section class="section">
+<h2 class="title">🎮 <span>Select Game</span></h2><input
+id="gameSearch"
+class="search"
+placeholder="🔎 Search games..."
+autocomplete="off">
+
+<div id="games" class="games"></div>
+</section><section class="section">
+<h2 class="title">💎 <span>Select Package</span></h2><div id="packages" class="packages"></div>
+</section><section class="order"><h2 class="title">🛒 Order Details</h2><div id="selected" class="selected">
+Select a package first.
+</div><label>Player ID</label>
+<input
+id="playerId"
+inputmode="numeric"
+placeholder="Enter Player ID">
+
+<label>Server ID</label>
+<input
+id="serverId"
+inputmode="numeric"
+placeholder="Enter Server ID">
+
+<button id="buy" class="buy">
+CONFIRM ORDER
+</button></section><section id="result" class="result">
+<div class="success">✅ Order Created</div><div class="row">
+<span>Order ID</span>
+<strong id="orderId">-</strong>
+</div><div class="row">
+<span>Game</span>
+<strong id="resultGame">-</strong>
+</div><div class="row">
+<span>Package</span>
+<strong id="resultProduct">-</strong>
+</div><div class="row">
+<span>Price</span>
+<strong id="resultPrice">-</strong>
+</div><div class="row">
+<span>Status</span>
+<strong id="resultStatus">PENDING</strong>
+</div>
+</section></main><footer>
+Sopheak Top Up © 2026
+</footer><script>
+let games = {};
+let selectedGame = null;
+let selectedProduct = null;
+
+const gamesBox = document.getElementById("games");
+const packagesBox = document.getElementById("packages");
+const search = document.getElementById("gameSearch");
+const selectedBox = document.getElementById("selected");
+
+function money(value){
+return Number(value).toLocaleString("en-US") + "៛";
+}
+
+async function loadGames(){
+
+try{
+
+const response = await fetch("/api/prices");
+const data = await response.json();
+
+if(!data.success)
+throw new Error("Could not load prices");
+
+games = data.games || {};
+
+renderGames();
+
+}catch(error){
+
+gamesBox.innerHTML =
+'<div class="empty">Unable to load games.</div>';
+
+console.error(error);
+
+}
+}
+
+function renderGames(){
+
+const query =
+search.value.trim().toLowerCase();
+
+gamesBox.innerHTML = "";
+
+const names =
+Object.keys(games).filter(name =>
+name.toLowerCase().includes(query)
+);
+
+if(!names.length){
+
+gamesBox.innerHTML =
+'<div class="empty">No games found.</div>';
+
+return;
+}
+
+names.forEach((name,index)=>{
+
+const game = games[name];
+
+const card =
+document.createElement("div");
+
+card.className =
+"game" +
+(name === selectedGame ? " active" : "");
+
+card.innerHTML = `
+<div class="game-icon">${gameEmoji(name)}</div>
+<div class="game-name">${escapeHtml(name)}</div>
+<div class="game-currency">
+${escapeHtml(game.currency)}
+</div>
+`;
+
+card.onclick = () => {
+
+selectedGame = name;
+selectedProduct = null;
+
+renderGames();
+renderPackages();
+
+};
+
+gamesBox.appendChild(card);
+
+});
+
+if(!selectedGame && names.length){
+
+selectedGame = names[0];
+
+renderGames();
+renderPackages();
+
+}
+}
+
+function renderPackages(){
+
+packagesBox.innerHTML = "";
+
+if(!selectedGame){
+
+packagesBox.innerHTML =
+'<div class="empty">Select a game first.</div>';
+
+return;
+}
+
+const game = games[selectedGame];
+
+if(!game || !game.products?.length){
+
+packagesBox.innerHTML =
+'<div class="empty">No packages available.</div>';
+
+return;
+}
+
+game.products.forEach(product=>{
+
+const card =
+document.createElement("div");
+
+card.className =
+"package" +
+(product.id === selectedProduct?.id ? " active" : "");
+
+card.innerHTML = `
+<div class="package-name">
+💎 ${escapeHtml(product.name)}
+</div>
+
+<div class="package-price">
+${money(product.price)}
+</div>
+
+<div class="package-id">
+${escapeHtml(product.id)}
+</div>
+`;
+
+card.onclick = () => {
+
+selectedProduct = product;
+
+renderPackages();
+
+selectedBox.innerHTML =
+`Selected:
+<strong>${escapeHtml(selectedGame)}</strong>
+—
+<strong>${escapeHtml(product.name)}</strong>
+—
+<strong>${money(product.price)}</strong>`;
+
+};
+
+packagesBox.appendChild(card);
+
+});
+
+}
+
+function gameEmoji(name){
+
+const n = name.toLowerCase();
+
+if(n.includes("mobile legends")) return "⚔️";
+if(n.includes("free fire")) return "🔥";
+if(n.includes("pubg")) return "🔫";
+if(n.includes("honor")) return "👑";
+if(n.includes("call of duty")) return "🎯";
+if(n.includes("arena")) return "🏆";
+if(n.includes("genshin")) return "✨";
+if(n.includes("honkai")) return "🚂";
+if(n.includes("zenless")) return "⚡";
+if(n.includes("roblox")) return "🧱";
+if(n.includes("wild rift")) return "🌌";
+if(n.includes("clash")) return "⚔️";
+
+return "🎮";
+}
+
+function escapeHtml(value){
+
+return String(value)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+search.addEventListener("input",renderGames);
+
+document.getElementById("buy")
+.addEventListener("click",async()=>{
+
+const playerId =
+document.getElementById("playerId")
+.value.trim();
+
+const serverId =
+document.getElementById("serverId")
+.value.trim();
+
+if(!selectedGame){
+alert("Please select a game.");
+return;
+}
+
+if(!selectedProduct){
+alert("Please select a package.");
+return;
+}
+
+if(!playerId){
+alert("Please enter Player ID.");
+return;
+}
+
+const button =
+document.getElementById("buy");
+
+button.disabled = true;
+button.textContent = "CREATING ORDER...";
+
+try{
+
+const response =
+await fetch("/api/orders",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+game:selectedGame,
+productId:selectedProduct.id,
+playerId,
+serverId
+})
+});
+
+const data =
+await response.json();
+
+if(!response.ok || !data.success){
+
+throw new Error(
+data.error ||
+data.message ||
+"Order failed"
+);
+
+}
+
+const order = data.order;
+
+document.getElementById("orderId")
+.textContent = order.orderId;
+
+document.getElementById("resultGame")
+.textContent = order.game;
+
+document.getElementById("resultProduct")
+.textContent = order.productName;
+
+document.getElementById("resultPrice")
+.textContent = money(order.price);
+
+document.getElementById("resultStatus")
+.textContent = order.status;
+
+const result =
+document.getElementById("result");
+
+result.style.display = "block";
+
+result.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+}catch(error){
+
+alert("Order failed: " + error.message);
+
+}finally{
+
+button.disabled = false;
+button.textContent = "CONFIRM ORDER";
+
+}
+
+});
+
+loadGames();
+</script></body>
+</html>
