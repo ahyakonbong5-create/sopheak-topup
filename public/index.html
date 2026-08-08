@@ -1421,4 +1421,42 @@ loadPrices();
 </body>
 </html>
 
-      
+<script>
+const API = "/api";
+
+async function loadTopUpGames() {
+  try {
+    const res = await fetch(`${API}/prices`);
+    const data = await res.json();
+
+    if (!data.success) throw new Error("Failed to load games");
+
+    console.log("Sopheak Top Up games:", data.games);
+
+    // Make available to your UI
+    window.SOPHEAK_GAMES = data.games;
+
+  } catch (error) {
+    console.error("Failed to load games:", error);
+  }
+}
+
+async function createTopUpOrder(game, productId, playerId, serverId = "") {
+  const res = await fetch(`${API}/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      game,
+      productId,
+      playerId,
+      serverId
+    })
+  });
+
+  return await res.json();
+}
+
+loadTopUpGames();
+</script>      
