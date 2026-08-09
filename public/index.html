@@ -442,6 +442,65 @@ button{cursor:pointer}
  .game-name{font-size:11px}
  .section{margin-left:9px;margin-right:9px;padding:15px}
 }
+
+.order-status{
+  margin:20px 0;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,37,168,.25);
+}
+
+.order-status h3{
+  margin-bottom:14px;
+  color:#fff;
+  font-size:18px;
+}
+
+.order-status-row{
+  display:flex;
+  gap:10px;
+}
+
+.order-status-row input{
+  flex:1;
+  min-width:0;
+  padding:12px 14px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  background:rgba(0,0,0,.25);
+  color:#fff;
+  outline:none;
+}
+
+.order-status-row input:focus{
+  border-color:#ff25a8;
+}
+
+.order-status-row button{
+  padding:12px 16px;
+  border:0;
+  border-radius:12px;
+  background:#ff25a8;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.order-status-row button:active{
+  transform:scale(.97);
+}
+
+@media(max-width:520px){
+  .order-status-row{
+    flex-direction:column;
+  }
+
+  .order-status-row button{
+    width:100%;
+  }
+}
+
 </style>
 </head>
 
@@ -571,6 +630,30 @@ button{cursor:pointer}
  <div class="notice">
   🔒 Secure payment • Order information is protected
  </div>
+</section>
+
+<section class="order-status" id="orderStatusSection">
+ <h3>🔎 Check Order Status</h3>
+
+ <div class="order-status-row">
+  <input
+   type="text"
+   id="orderIdInput"
+   placeholder="Enter Order ID"
+   autocomplete="off"
+  >
+
+  <button
+   type="button"
+   onclick="checkOrderStatus(
+     document.getElementById('orderIdInput').value.trim()
+   )"
+  >
+   Check Status
+  </button>
+ </div>
+
+ <div id="orderStatusResult" style="display:none;"></div>
 </section>
 
 <div class="footer">
@@ -1186,6 +1269,49 @@ if(data.qrUrl){
     btn.textContent=oldText;
 
     updateSummary();
+  }
+}
+
+async function checkOrderStatus(orderId){
+  if(!orderId){
+    showToast("⚠️ Order ID is required");
+    return;
+  }
+
+  try{
+    const res = await fetch(
+      "/api/orders/" +
+      encodeURIComponent(orderId),
+      {
+        headers:{
+          "Accept":"application/json"
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    if(!res.ok || !data.success){
+      throw new Error(
+        data.error || "Order not found"
+      );
+    }
+
+    const order = data.order;
+
+    alert(
+      "Order Status\\n\\n" +
+      "Order ID: " + order.orderId + "\\n" +
+      "Game: " + order.game + "\\n" +
+      "Product: " + order.productName + "\\n" +
+      "Price: " + Number(order.price).toLocaleString() + "៛\\n" +
+      "Payment: " + order.paymentStatus + "\\n" +
+      "Top-up: " + order.topupStatus
+    );
+
+  }catch(err){
+    console.error(err);
+    showToast("❌ " + err.message);
   }
 }
 
