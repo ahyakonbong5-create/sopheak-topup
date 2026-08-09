@@ -1,649 +1,1283 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sopheak Top Up</title><style>
-* {
-  box-sizing: border-box;
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#ff25a8">
+<title>Sopheak Top Up</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --pink:#ff25a8;
+ --pink2:#ff69c5;
+ --soft:#fff0f9;
+ --bg:#f6f6f8;
+ --card:#fff;
+ --text:#18181d;
+ --muted:#888;
+ --gold:#f4b400;
+ --border:#eee;
+}
+body{
+ font-family:Arial,Helvetica,sans-serif;
+ background:var(--bg);
+ color:var(--text);
+ padding-bottom:40px;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.header{
+ position:sticky;
+ top:0;
+ z-index:100;
+ height:76px;
+ background:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 18px;
+ box-shadow:0 2px 12px #00000010;
+}
+.menu{
+ font-size:30px;
+ border:0;
+ background:none;
+ width:44px;
+}
+.brand{
+ font-weight:900;
+ color:var(--pink);
+ font-size:18px;
+ letter-spacing:.5px;
+}
+.brand span{color:#222}
+.login{
+ background:linear-gradient(135deg,var(--pink),#ff0f82);
+ color:#fff;
+ border:0;
+ border-radius:25px;
+ padding:12px 18px;
+ font-weight:800;
+}
+.container{
+ width:min(100%,720px);
+ margin:auto;
+}
+.banner{
+ margin:12px 14px;
+ height:150px;
+ border-radius:18px;
+ overflow:hidden;
+ background:linear-gradient(135deg,#ffb3df,#ff38a9 55%,#8d2dff);
+ position:relative;
+ color:#fff;
+ padding:25px;
+}
+.banner:after{
+ content:"💎";
+ position:absolute;
+ right:25px;
+ bottom:10px;
+ font-size:75px;
+ filter:drop-shadow(0 8px 8px #0003);
+}
+.banner h2{font-size:25px}
+.banner p{margin-top:8px;font-weight:700}
+.dots{
+ position:absolute;
+ bottom:10px;
+ left:50%;
+ transform:translateX(-50%);
+}
+.dots span{
+ display:inline-block;
+ width:7px;height:7px;
+ background:#ffffff80;
+ border-radius:50%;
+ margin:3px;
+}
+.dots .active{
+ background:#fff;
+ width:20px;
+ border-radius:10px;
+}
+.categories{
+ display:flex;
+ gap:10px;
+ overflow-x:auto;
+ padding:10px 16px 14px;
+ scrollbar-width:none;
+}
+.categories::-webkit-scrollbar{display:none}
+.cat{
+ white-space:nowrap;
+ border:0;
+ background:#ffe0f3;
+ color:#5b1745;
+ padding:12px 20px;
+ border-radius:12px;
+ font-weight:800;
+ font-size:15px;
+}
+.cat.active{
+ background:#ffb0dc;
+ box-shadow:0 5px 15px #ff25a833;
+}
+.section{
+ background:#fff;
+ margin:8px 14px 16px;
+ border-radius:20px;
+ padding:20px;
+ box-shadow:0 3px 15px #00000008;
+}
+.section-title{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ font-size:25px;
+ font-weight:900;
+ margin-bottom:18px;
+}
+.step{
+ width:38px;height:38px;
+ border:3px solid var(--pink);
+ color:var(--pink);
+ border-radius:50%;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:900;
+}
+.search{
+ position:relative;
+ margin-bottom:16px;
+}
+.search input{
+ width:100%;
+ padding:15px 45px 15px 17px;
+ border:1px solid #ddd;
+ border-radius:14px;
+ outline:none;
+ background:#fafafa;
+}
+.search input:focus{
+ border-color:var(--pink);
+ box-shadow:0 0 0 3px #ff25a815;
+}
+.search-icon{
+ position:absolute;
+ right:15px;
+ top:13px;
+ font-size:20px;
+}
+.games{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:13px;
+}
+.game{
+ border:2px solid transparent;
+ background:#fafafa;
+ border-radius:20px;
+ padding:10px 7px 12px;
+ text-align:center;
+ transition:.18s;
+}
+.game:active{transform:scale(.97)}
+.game.selected{
+ border-color:var(--pink);
+ background:#fff4fb;
+ box-shadow:0 5px 16px #ff25a820;
+}
+.game-logo{
+ width:82px;
+ height:82px;
+ margin:auto;
+ border-radius:20px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:37px;
+ color:#fff;
+ font-weight:900;
+ box-shadow:inset 0 0 0 1px #ffffff55;
+}
+.game-name{
+ font-size:13px;
+ font-weight:800;
+ margin-top:9px;
+ min-height:30px;
+}
+.game-region{
+ color:#999;
+ font-size:10px;
+ margin-top:3px;
+}
+.ml{background:linear-gradient(135deg,#2d7cff,#9d55ff)}
+.ff{background:linear-gradient(135deg,#ff4b31,#ffae2b)}
+.pubg{background:linear-gradient(135deg,#5b432d,#171717)}
+.cod{background:linear-gradient(135deg,#111,#4e6475)}
+.bs{background:linear-gradient(135deg,#ef2939,#ff9b32)}
+.roblox{background:#2f5cff}
+.valorant{background:linear-gradient(135deg,#ff4655,#7b1722)}
+.zepeto{background:linear-gradient(135deg,#ff8cb8,#7344aa)}
+.genshin{background:linear-gradient(135deg,#65cfff,#7d75ff)}
+.honkai{background:linear-gradient(135deg,#9d5cff,#f25cff)}
+.delta{background:linear-gradient(135deg,#3d4856,#111)}
+
+.label{
+ display:block;
+ font-size:14px;
+ font-weight:800;
+ margin-bottom:8px;
+}
+.input{
+ width:100%;
+ padding:15px;
+ border:1px solid #ddd;
+ border-radius:12px;
+ outline:none;
+ background:#fafafa;
+ margin-bottom:12px;
+}
+.input:focus{
+ border-color:var(--pink);
+ box-shadow:0 0 0 3px #ff25a815;
+}
+.recommended{margin:15px 0 20px}
+.rec-title{
+ color:#d58c00;
+ font-size:19px;
+ font-weight:900;
+ margin-bottom:12px;
+}
+.rec-card{
+ position:relative;
+ border:2px solid #ffe68a;
+ background:linear-gradient(100deg,#fff,#fffdf2);
+ border-radius:18px;
+ padding:18px 20px;
+ margin-bottom:12px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ width:100%;
+ text-align:left;
+}
+.rec-card.selected{
+ border-color:var(--pink);
+ box-shadow:0 4px 18px #ff25a822;
+}
+.top-badge{
+ position:absolute;
+ right:-1px;
+ top:-1px;
+ background:#f3ad08;
+ color:#fff;
+ padding:6px 13px;
+ border-radius:0 16px 0 15px;
+ font-size:12px;
+ font-weight:900;
+}
+.rec-name{font-weight:900;font-size:18px}
+.price{
+ color:var(--pink);
+ font-size:17px;
+ font-weight:900;
+ margin-top:5px;
+}
+.package-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:12px;
+}
+.package{
+ border:1px solid #e4e4e4;
+ background:#fff;
+ border-radius:13px;
+ padding:15px;
+ min-height:90px;
+ position:relative;
+ text-align:left;
+ width:100%;
+}
+.package.selected{
+ border:2px solid var(--pink);
+ background:#fff4fb;
+}
+.package-name{
+ font-size:18px;
+ font-weight:900;
+}
+.package-price{
+ color:#777;
+ margin-top:7px;
+ font-weight:700;
+}
+.diamond{
+ position:absolute;
+ right:12px;
+ top:30px;
+ font-size:25px;
+}
+.payment-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+.payment{
+ border:1px solid #ddd;
+ border-radius:14px;
+ background:#fff;
+ padding:18px 10px;
+ text-align:center;
+ width:100%;
+}
+.payment.selected{
+ border:2px solid var(--pink);
+ background:#fff3fa;
+}
+.payment-logo{
+ height:55px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:900;
+ font-size:20px;
+}
+.khqr{color:#d40027}
+.aba{color:#08779a}
+.coupon{
+ display:flex;
+ gap:8px;
+ margin-top:15px;
+}
+.coupon input{margin:0}
+.apply{
+ border:0;
+ background:#ffb3dc;
+ color:#fff;
+ border-radius:12px;
+ padding:0 18px;
+ font-weight:900;
+}
+.summary{
+ background:#fff8fc;
+ border:1px solid #ffd0eb;
+ border-radius:16px;
+ padding:16px;
+ margin-top:16px;
+}
+.row{
+ display:flex;
+ justify-content:space-between;
+ gap:15px;
+ margin:9px 0;
+}
+.row strong{
+ text-align:right;
+ overflow-wrap:anywhere;
+}
+.total{
+ border-top:1px dashed #ddd;
+ padding-top:12px;
+ margin-top:12px;
+ font-size:20px;
+ font-weight:900;
+}
+.buy{
+ width:100%;
+ border:0;
+ margin-top:16px;
+ padding:17px;
+ border-radius:14px;
+ background:linear-gradient(135deg,#ff25a8,#ff087c);
+ color:#fff;
+ font-weight:900;
+ font-size:18px;
+ box-shadow:0 7px 18px #ff25a844;
+}
+.buy:disabled{
+ opacity:.45;
+ box-shadow:none;
+}
+.notice{
+ text-align:center;
+ color:#999;
+ font-size:12px;
+ margin-top:12px;
+}
+.empty{
+ grid-column:1/-1;
+ text-align:center;
+ color:#999;
+ padding:30px 5px;
+}
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:20px;
+ transform:translateX(-50%) translateY(100px);
+ background:#222;
+ color:#fff;
+ padding:13px 18px;
+ border-radius:30px;
+ z-index:999;
+ transition:.25s;
+ font-size:14px;
+ max-width:90%;
+ text-align:center;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.footer{
+ text-align:center;
+ color:#999;
+ font-size:12px;
+ padding:10px;
+}
+@media(max-width:390px){
+ .games{grid-template-columns:repeat(3,1fr);gap:8px}
+ .game-logo{width:70px;height:70px;font-size:30px}
+ .game-name{font-size:11px}
+ .section{margin-left:9px;margin-right:9px;padding:15px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+ <button class="menu" onclick="showToast('Menu coming soon')">☰</button>
+ <div class="brand">⚡ SOPHEAK <span>TOP UP</span></div>
+ <button class="login" onclick="showToast('Login coming soon')">⇥ Log In</button>
+</header>
+
+<main class="container">
+
+<div class="banner">
+ <h2>GAME TOP UP</h2>
+ <p>Fast • Simple • Secure 💎</p>
+ <div class="dots">
+  <span class="active"></span><span></span><span></span>
+ </div>
+</div>
+
+<nav class="categories">
+ <button class="cat active" data-cat="all">HOT 🔥</button>
+ <button class="cat" data-cat="ml">MOBILE LEGENDS</button>
+ <button class="cat" data-cat="ff">FREE FIRE</button>
+ <button class="cat" data-cat="pubg">PUBG</button>
+ <button class="cat" data-cat="cod">CODM</button>
+ <button class="cat" data-cat="bs">BLOOD STRIKE</button>
+</nav>
+
+<section class="section">
+ <div class="section-title">
+  <div class="step">1</div>
+  <div>Select Game</div>
+ </div>
+
+ <div class="search">
+  <input id="gameSearch" type="search" placeholder="Search game...">
+  <span class="search-icon">🔍</span>
+ </div>
+
+ <div class="games" id="games"></div>
+</section>
+
+<section class="section">
+ <div class="section-title">
+  <div class="step">2</div>
+  <div>Player Information</div>
+ </div>
+
+ <label class="label">Player ID</label>
+ <input id="playerId" class="input" placeholder="Enter Player ID">
+
+ <label class="label">
+  Server ID <span style="color:#aaa">(if required)</span>
+ </label>
+ <input id="serverId" class="input" placeholder="Enter Server ID">
+</section>
+
+<section class="section">
+ <div class="section-title">
+  <div class="step">3</div>
+  <div>Select Package</div>
+ </div>
+
+ <div id="selectedGameTitle" style="font-weight:900;margin-bottom:12px">
+  Select a game first
+ </div>
+
+ <div class="recommended">
+  <div class="rec-title">✨ Recommended for You</div>
+  <div id="recommended"></div>
+ </div>
+
+ <div class="package-grid" id="packages"></div>
+</section>
+
+<section class="section">
+ <div class="section-title">
+  <div class="step">4</div>
+  <div>Payment</div>
+ </div>
+
+ <div class="payment-grid">
+  <button class="payment selected" data-payment="KHQR">
+   <div class="payment-logo khqr">▣ KHQR</div>
+   <small>Pay with KHQR</small>
+  </button>
+
+  <button class="payment" data-payment="ABA Pay">
+   <div class="payment-logo aba">ABA</div>
+   <small>Pay with ABA</small>
+  </button>
+ </div>
+
+ <div class="coupon">
+  <input id="coupon" class="input" placeholder="ENTER COUPON CODE">
+  <button class="apply" onclick="applyCoupon()">Apply</button>
+ </div>
+
+ <div class="summary">
+  <div class="row">
+   <span>Game</span>
+   <strong id="sumGame">-</strong>
+  </div>
+
+  <div class="row">
+   <span>Package</span>
+   <strong id="sumPackage">-</strong>
+  </div>
+
+  <div class="row">
+   <span>Player ID</span>
+   <strong id="sumPlayer">-</strong>
+  </div>
+
+  <div class="row total">
+   <span>Total</span>
+   <strong id="sumPrice">៛0</strong>
+  </div>
+ </div>
+
+ <button class="buy" id="buyBtn" disabled onclick="createOrder()">
+  💳 Continue Payment
+ </button>
+
+ <div class="notice">
+  🔒 Secure payment • Order information is protected
+ </div>
+</section>
+
+<div class="footer">
+ © 2026 Sopheak Top Up • Game Digital Store
+</div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const fallbackGames = [
+ {
+  id:"mobile-legends",
+  name:"Mobile Legends",
+  cat:"ml",
+  icon:"⚔️",
+  region:"Global",
+  currency:"Diamonds",
+  products:[
+   {id:"ml-86",name:"86 Diamonds",price:5000},
+   {id:"ml-172",name:"172 Diamonds",price:9500},
+   {id:"ml-257",name:"257 Diamonds",price:14000},
+   {id:"ml-344",name:"344 Diamonds",price:18500},
+   {id:"ml-429",name:"429 Diamonds",price:22500},
+   {id:"ml-514",name:"514 Diamonds",price:27000}
+  ]
+ },
+ {
+  id:"free-fire",
+  name:"Free Fire",
+  cat:"ff",
+  icon:"🔥",
+  region:"Global",
+  currency:"Diamonds",
+  products:[
+   {id:"ff-100",name:"100 Diamonds",price:5000},
+   {id:"ff-310",name:"310 Diamonds",price:14000},
+   {id:"ff-520",name:"520 Diamonds",price:22000},
+   {id:"ff-1060",name:"1060 Diamonds",price:42000}
+  ]
+ },
+ {
+  id:"pubg-mobile",
+  name:"PUBG Mobile",
+  cat:"pubg",
+  icon:"🪖",
+  region:"Global",
+  currency:"UC",
+  products:[
+   {id:"pubg-60",name:"60 UC",price:5000},
+   {id:"pubg-325",name:"325 UC",price:24000},
+   {id:"pubg-660",name:"660 UC",price:47000},
+   {id:"pubg-1800",name:"1800 UC",price:120000}
+  ]
+ },
+ {
+  id:"call-of-duty-mobile",
+  name:"Call of Duty Mobile",
+  cat:"cod",
+  icon:"🎯",
+  region:"Global",
+  currency:"CP",
+  products:[
+   {id:"cod-80",name:"80 CP",price:6000},
+   {id:"cod-420",name:"420 CP",price:28000},
+   {id:"cod-880",name:"880 CP",price:55000}
+  ]
+ },
+ {
+  id:"blood-strike",
+  name:"Blood Strike",
+  cat:"bs",
+  icon:"🩸",
+  region:"Global",
+  currency:"Gold",
+  products:[
+   {id:"bs-100",name:"100 Gold",price:5000},
+   {id:"bs-300",name:"300 Gold",price:14000},
+   {id:"bs-500",name:"500 Gold",price:22000},
+   {id:"bs-1000",name:"1000 Gold",price:42000}
+  ]
+ },
+ {
+  id:"roblox",
+  name:"Roblox",
+  cat:"roblox",
+  icon:"⬜",
+  region:"Global",
+  currency:"Robux",
+  products:[
+   {id:"rbx-80",name:"80 Robux",price:5000},
+   {id:"rbx-400",name:"400 Robux",price:22000},
+   {id:"rbx-800",name:"800 Robux",price:42000}
+  ]
+ },
+ {
+  id:"valorant",
+  name:"Valorant",
+  cat:"valorant",
+  icon:"V",
+  region:"Cambodia",
+  currency:"VP",
+  products:[
+   {id:"val-475",name:"475 VP",price:22000},
+   {id:"val-1000",name:"1000 VP",price:42000},
+   {id:"val-2050",name:"2050 VP",price:80000}
+  ]
+ },
+ {
+  id:"zepeto",
+  name:"ZEPETO",
+  cat:"zepeto",
+  icon:"Z",
+  region:"Global",
+  currency:"Coins",
+  products:[
+   {id:"zep-100",name:"100 Coins",price:5000},
+   {id:"zep-500",name:"500 Coins",price:20000},
+   {id:"zep-1000",name:"1000 Coins",price:38000}
+  ]
+ },
+ {
+  id:"genshin",
+  name:"Genshin Impact",
+  cat:"genshin",
+  icon:"✦",
+  region:"Global",
+  currency:"Genesis Crystals",
+  products:[
+   {id:"gen-60",name:"60 Crystals",price:5000},
+   {id:"gen-300",name:"300 Crystals",price:22000},
+   {id:"gen-980",name:"980 Crystals",price:65000}
+  ]
+ },
+ {
+  id:"honkai",
+  name:"Honkai: Star Rail",
+  cat:"honkai",
+  icon:"★",
+  region:"Global",
+  currency:"Oneiric Shards",
+  products:[
+   {id:"hsr-60",name:"60 Shards",price:5000},
+   {id:"hsr-300",name:"300 Shards",price:22000},
+   {id:"hsr-980",name:"980 Shards",price:65000}
+  ]
+ },
+ {
+  id:"delta-force",
+  name:"Delta Force",
+  cat:"delta",
+  icon:"Δ",
+  region:"Global",
+  currency:"Points",
+  products:[
+   {id:"df-100",name:"100 Points",price:5000},
+   {id:"df-500",name:"500 Points",price:22000},
+   {id:"df-1000",name:"1000 Points",price:42000}
+  ]
+ }
+];
+
+let games=[...fallbackGames];
+let selectedGame=null;
+let selectedProduct=null;
+let selectedPayment="KHQR";
+let couponDiscount=0;
+let activeCategory="all";
+
+const gamesEl=document.getElementById("games");
+const packagesEl=document.getElementById("packages");
+const recommendedEl=document.getElementById("recommended");
+const searchEl=document.getElementById("gameSearch");
+
+function moneyKHR(value){
+ return new Intl.NumberFormat("km-KH")
+  .format(Number(value||0))+"៛";
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #070b14;
-  color: #fff;
+function slug(text){
+ return String(text)
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g,"-")
+  .replace(/^-|-$/g,"");
 }
 
-header {
-  padding: 18px 20px;
-  border-bottom: 1px solid #20283a;
-  background: #0b1020;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+function escapeHTML(value){
+ return String(value??"")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 }
 
-.logo {
-  font-size: 21px;
-  font-weight: 900;
-  color: #62a8ff;
-}
-
-.container {
-  width: min(1100px, 92%);
-  margin: auto;
-  padding: 30px 0 60px;
-}
-
-.hero {
-  padding: 25px 0;
-}
-
-.hero h1 {
-  font-size: clamp(32px, 7vw, 58px);
-  margin: 0 0 12px;
-}
-
-.hero p {
-  color: #8e9ab2;
-}
-
-.search {
-  width: 100%;
-  padding: 15px 17px;
-  border: 1px solid #273149;
-  border-radius: 14px;
-  background: #101726;
-  color: white;
-  outline: none;
-  font-size: 16px;
-  margin: 15px 0 25px;
-}
-
-.section-title {
-  margin: 25px 0 14px;
-  font-size: 20px;
-}
-
-.games {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
-}
-
-.game {
-  padding: 18px;
-  background: #101726;
-  border: 1px solid #273149;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: .2s;
-}
-
-.game:hover,
-.game.active {
-  border-color: #4d9cff;
-  background: #121e35;
-  transform: translateY(-2px);
-}
-
-.game-icon {
-  width: 54px;
-  height: 54px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  background: #18243b;
-  font-size: 27px;
-  margin-bottom: 12px;
-}
-
-.game-name {
-  font-weight: 700;
-}
-
-.game-currency {
-  color: #7f8ba2;
-  font-size: 13px;
-  margin-top: 5px;
-}
-
-.packages {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 12px;
-}
-
-.package {
-  padding: 18px;
-  border-radius: 15px;
-  border: 1px solid #273149;
-  background: #101726;
-  cursor: pointer;
-}
-
-.package:hover,
-.package.active {
-  border-color: #4d9cff;
-  background: #121e35;
-}
-
-.package-name {
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.price {
-  color: #64a9ff;
-  margin-top: 8px;
-  font-weight: 800;
-}
-
-.form {
-  margin-top: 25px;
-  padding: 20px;
-  background: #101726;
-  border: 1px solid #273149;
-  border-radius: 18px;
-}
-
-.input {
-  width: 100%;
-  padding: 14px;
-  margin: 7px 0 12px;
-  border: 1px solid #29334a;
-  border-radius: 12px;
-  background: #0b111e;
-  color: white;
-  font-size: 16px;
-  outline: none;
-}
-
-.button {
-  width: 100%;
-  padding: 15px;
-  border: 0;
-  border-radius: 13px;
-  background: #4d9cff;
-  color: white;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.button:disabled {
-  opacity: .5;
-}
-
-.summary {
-  margin-top: 20px;
-  padding: 18px;
-  background: #0b111e;
-  border-radius: 14px;
-  border: 1px solid #273149;
-  display: none;
-}
-
-.result {
-  margin-top: 18px;
-  padding: 18px;
-  background: #0d1829;
-  border: 1px solid #245b91;
-  border-radius: 14px;
-  display: none;
-}
-
-.muted {
-  color: #8793a9;
-}
-
-.error {
-  color: #ff7272;
-  margin-top: 12px;
-}
-
-.loading {
-  color: #8fa1bd;
-  padding: 20px 0;
-}
-
-footer {
-  text-align: center;
-  padding: 25px;
-  color: #66738c;
-  border-top: 1px solid #20283a;
-}
-
-@media(max-width:600px) {
-  .container {
-    width: 94%;
-  }
-
-  .games {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .packages {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-</style></head><body><header>
-  <div class="logo">⚡ SOPHEAK TOP UP</div>
-</header><main class="container">  <section class="hero">
-    <h1>Game Top Up<br>Fast & Simple.</h1>
-    <p>Select your game, choose a package and create your order.</p>
-  </section><input
-id="search"
-class="search"
-type="search"
-placeholder="🔎 Search game..."
-
-«»
-
-  <h2 class="section-title">Select Game</h2>  <div id="games" class="games">
-    <div class="loading">Loading games...</div>
-  </div>  <h2 class="section-title">Select Package</h2>  <div id="packages" class="packages">
-    <div class="muted">Select a game first.</div>
-  </div>  <div class="form"><h2>Player Information</h2>
-
-<label>Player ID</label>
-<input
-  id="playerId"
-  class="input"
-  placeholder="Enter Player ID"
->
-
-<label>Server ID <span class="muted">(optional)</span></label>
-<input
-  id="serverId"
-  class="input"
-  placeholder="Enter Server ID"
->
-
-<div id="summary" class="summary"></div>
-
-<button id="orderBtn" class="button" disabled>
-  Create Order
-</button>
-
-<div id="error" class="error"></div>
-
-<div id="result" class="result"></div>
-
-  </div></main><footer>
-  © 2026 Sopheak Top Up
-</footer><script>
-
-const API = "/api";
-
-let gamesData = {};
-let selectedGame = null;
-let selectedProduct = null;
-
-const gamesEl = document.getElementById("games");
-const packagesEl = document.getElementById("packages");
-const searchEl = document.getElementById("search");
-const playerEl = document.getElementById("playerId");
-const serverEl = document.getElementById("serverId");
-const orderBtn = document.getElementById("orderBtn");
-const summaryEl = document.getElementById("summary");
-const resultEl = document.getElementById("result");
-const errorEl = document.getElementById("error");
-
-
-function gameIcon(name) {
-
-  const icons = {
-    "Mobile Legends": "⚔️",
-    "Free Fire": "🔥",
-    "PUBG Mobile": "🔫",
-    "Call of Duty Mobile": "🎯"
-  };
-
-  return icons[name] || "🎮";
-}
-
-
-function formatPrice(price) {
-
-  return Number(price).toLocaleString("en-US") + "៛";
-}
-
-
-async function loadGames() {
-
-  try {
-
-    const response =
-      await fetch(`${API}/prices`);
-
-    const data =
-      await response.json();
-
-    if (!data.success) {
-      throw new Error("API error");
-    }
-
-    gamesData = data.games;
-
-    renderGames();
-
-  } catch (error) {
-
-    gamesEl.innerHTML =
-      `<div class="error">
-        Failed to load games.
-      </div>`;
-
-    console.error(error);
-  }
-}
-
-
-function renderGames(filter = "") {
-
-  const query =
-    filter.trim().toLowerCase();
-
-  gamesEl.innerHTML = "";
-
-  Object.entries(gamesData)
-    .filter(([name]) =>
-      name.toLowerCase().includes(query)
-    )
-    .forEach(([name, game]) => {
-
-      const div =
-        document.createElement("div");
-
-      div.className = "game";
-
-      if (selectedGame === name) {
-        div.classList.add("active");
-      }
-
-      div.innerHTML = `
-        <div class="game-icon">
-          ${gameIcon(name)}
-        </div>
-
-        <div class="game-name">
-          ${name}
-        </div>
-
-        <div class="game-currency">
-          ${game.currency}
-        </div>
-      `;
-
-      div.onclick = () =>
-        selectGame(name);
-
-      gamesEl.appendChild(div);
+function findGame(name){
+ return games.find(g=>
+  g.name.toLowerCase()===String(name).toLowerCase()
+ );
+}async function loadPrices(){
+  try{
+    const res=await fetch("/api/prices",{
+      headers:{Accept:"application/json"}
     });
 
+    if(!res.ok) throw new Error("API error");
 
-  if (!gamesEl.children.length) {
+    const data=await res.json();
 
-    gamesEl.innerHTML =
-      `<div class="muted">
-        No game found.
-      </div>`;
+    if(data && data.success && data.games){
+      const apiGames=[];
+
+      Object.entries(data.games).forEach(([name,value])=>{
+        const existing=findGame(name);
+
+        apiGames.push({
+          id:existing?.id||slug(name),
+          name,
+          cat:existing?.cat||"all",
+          icon:existing?.icon||"🎮",
+          region:existing?.region||"Global",
+          currency:value.currency||"Credits",
+          products:Array.isArray(value.products)
+            ? value.products
+            : []
+        });
+      });
+
+      const apiNames=apiGames.map(g=>
+        g.name.toLowerCase()
+      );
+
+      games=[
+        ...apiGames,
+        ...fallbackGames.filter(g=>
+          !apiNames.includes(g.name.toLowerCase())
+        )
+      ];
+
+      renderGames();
+    }
+  }catch(err){
+    console.log(
+      "Using local fallback prices:",
+      err.message
+    );
   }
 }
 
+function renderGames(){
+  const q=searchEl.value.trim().toLowerCase();
 
-function selectGame(name) {
+  const list=games.filter(g=>{
+    const categoryOK=
+      activeCategory==="all" ||
+      g.cat===activeCategory;
 
-  selectedGame = name;
-  selectedProduct = null;
+    const searchOK=
+      !q ||
+      g.name.toLowerCase().includes(q) ||
+      g.currency.toLowerCase().includes(q);
 
-  renderGames(searchEl.value);
+    return categoryOK && searchOK;
+  });
+
+  gamesEl.innerHTML="";
+
+  if(!list.length){
+    gamesEl.innerHTML=`
+      <div class="empty">
+        😕<br><br>
+        No game found
+      </div>
+    `;
+    return;
+  }
+
+  list.forEach(game=>{
+    const div=document.createElement("button");
+
+    div.className=
+      "game "+
+      (selectedGame?.id===game.id
+        ?"selected":"");
+
+    div.innerHTML=`
+      <div class="game-logo ${escapeHTML(game.cat)}">
+        ${escapeHTML(game.icon)}
+      </div>
+
+      <div class="game-name">
+        ${escapeHTML(game.name)}
+      </div>
+
+      <div class="game-region">
+        ${escapeHTML(game.region)}
+      </div>
+    `;
+
+    div.onclick=()=>{
+      selectGame(game);
+    };
+
+    gamesEl.appendChild(div);
+  });
+}
+
+function selectGame(game){
+  selectedGame=game;
+  selectedProduct=null;
+
+  document.getElementById(
+    "selectedGameTitle"
+  ).textContent=
+    `${game.name} • ${game.currency}`;
+
+  renderGames();
   renderPackages();
+  updateSummary();
+}
+
+function renderPackages(){
+  packagesEl.innerHTML="";
+  recommendedEl.innerHTML="";
+
+  if(!selectedGame){
+    packagesEl.innerHTML=`
+      <div class="empty">
+        🎮 Select a game first
+      </div>
+    `;
+    return;
+  }
+
+  const products=selectedGame.products||[];
+
+  if(!products.length){
+    packagesEl.innerHTML=`
+      <div class="empty">
+        ⚠️ Packages coming soon for
+        ${escapeHTML(selectedGame.name)}
+      </div>
+    `;
+    return;
+  }
+
+  products.slice(0,3).forEach((product,index)=>{
+    const card=document.createElement("button");
+
+    card.className=
+      "rec-card "+
+      (selectedProduct?.id===product.id
+        ?"selected":"");
+
+    card.innerHTML=`
+      <span class="top-badge">
+        ${index===0?"★ TOP":"★ BEST"}
+      </span>
+
+      <div>
+        <div class="rec-name">
+          ${escapeHTML(product.name)}
+        </div>
+
+        <div class="price">
+          ${moneyKHR(product.price)}
+        </div>
+      </div>
+
+      <div>💎</div>
+    `;
+
+    card.onclick=()=>{
+      selectProduct(product);
+    };
+
+    recommendedEl.appendChild(card);
+  });
+
+  products.forEach(product=>{
+    const card=document.createElement("button");
+
+    card.className=
+      "package "+
+      (selectedProduct?.id===product.id
+        ?"selected":"");
+
+    card.innerHTML=`
+      <div class="package-name">
+        ${escapeHTML(product.name)}
+      </div>
+
+      <div class="package-price">
+        ${moneyKHR(product.price)}
+      </div>
+
+      <div class="diamond">💎</div>
+    `;
+
+    card.onclick=()=>{
+      selectProduct(product);
+    };
+
+    packagesEl.appendChild(card);
+  });
+}
+
+function selectProduct(product){
+  selectedProduct=product;
+
+  renderPackages();
+  updateSummary();
+}
+
+function updateSummary(){
+  const gameName=
+    selectedGame?.name||"-";
+
+  const packageName=
+    selectedProduct?.name||"-";
+
+  const playerId=
+    document.getElementById("playerId")
+      .value.trim()||"-";
+
+  let price=
+    Number(selectedProduct?.price||0);
+
+  price=Math.max(
+    0,
+    price-couponDiscount
+  );
+
+  document.getElementById("sumGame")
+    .textContent=gameName;
+
+  document.getElementById("sumPackage")
+    .textContent=packageName;
+
+  document.getElementById("sumPlayer")
+    .textContent=playerId;
+
+  document.getElementById("sumPrice")
+    .textContent=moneyKHR(price);
+
+  const buyBtn=
+    document.getElementById("buyBtn");
+
+  buyBtn.disabled=
+    !selectedGame ||
+    !selectedProduct ||
+    !playerId;
+}
+
+function applyCoupon(){
+  const code=
+    document.getElementById("coupon")
+      .value.trim()
+      .toUpperCase();
+
+  couponDiscount=0;
+
+  if(code==="SOPHEAK10"){
+    if(selectedProduct){
+      couponDiscount=
+        Math.floor(
+          Number(selectedProduct.price)*0.10
+        );
+    }
+
+    showToast(
+      "🎉 Coupon applied: 10% OFF"
+    );
+  }else if(code){
+    showToast(
+      "❌ Invalid coupon code"
+    );
+  }else{
+    showToast(
+      "Enter a coupon code"
+    );
+  }
 
   updateSummary();
 }
 
+function selectPayment(payment){
+  selectedPayment=payment;
 
-function renderPackages() {
-
-  packagesEl.innerHTML = "";
-
-  if (!selectedGame) {
-
-    packagesEl.innerHTML =
-      `<div class="muted">
-        Select a game first.
-      </div>`;
-
-    return;
-  }
-
-  const game =
-    gamesData[selectedGame];
-
-  game.products.forEach(product => {
-
-    const div =
-      document.createElement("div");
-
-    div.className = "package";
-
-    if (
-      selectedProduct &&
-      selectedProduct.id === product.id
-    ) {
-      div.classList.add("active");
-    }
-
-    div.innerHTML = `
-      <div class="package-name">
-        💎 ${product.name}
-      </div>
-
-      <div class="price">
-        ${formatPrice(product.price)}
-      </div>
-    `;
-
-    div.onclick = () => {
-
-      selectedProduct = product;
-
-      renderPackages();
-      updateSummary();
-    };
-
-    packagesEl.appendChild(div);
+  document.querySelectorAll(
+    ".payment"
+  ).forEach(btn=>{
+    btn.classList.toggle(
+      "selected",
+      btn.dataset.payment===payment
+    );
   });
 }
 
-
-function updateSummary() {
-
-  if (
-    !selectedGame ||
-    !selectedProduct
-  ) {
-
-    summaryEl.style.display = "none";
-    orderBtn.disabled = true;
-
+async function createOrder(){
+  if(!selectedGame||
+     !selectedProduct){
+    showToast(
+      "⚠️ Select game and package first"
+    );
     return;
   }
 
-  summaryEl.style.display = "block";
+  const playerId=
+    document.getElementById("playerId")
+      .value.trim();
 
-  summaryEl.innerHTML = `
-    <strong>Order Summary</strong>
+  const serverId=
+    document.getElementById("serverId")
+      .value.trim();
 
-    <br><br>
-
-    Game:
-    <strong>${selectedGame}</strong>
-
-    <br>
-
-    Package:
-    <strong>${selectedProduct.name}</strong>
-
-    <br>
-
-    Price:
-    <strong>${formatPrice(selectedProduct.price)}</strong>
-  `;
-
-  orderBtn.disabled =
-    playerEl.value.trim().length === 0;
-}
-
-
-playerEl.addEventListener("input", () => {
-
-  orderBtn.disabled =
-    !selectedGame ||
-    !selectedProduct ||
-    playerEl.value.trim().length === 0;
-});
-
-
-searchEl.addEventListener("input", () => {
-
-  renderGames(searchEl.value);
-});
-
-
-orderBtn.addEventListener("click", async () => {
-
-  errorEl.textContent = "";
-  resultEl.style.display = "none";
-
-  if (
-    !selectedGame ||
-    !selectedProduct
-  ) {
+  if(!playerId){
+    showToast(
+      "⚠️ Enter Player ID"
+    );
     return;
   }
 
-  const playerId =
-    playerEl.value.trim();
+  const price=Math.max(
+    0,
+    Number(selectedProduct.price)-
+    Number(couponDiscount||0)
+  );
 
-  const serverId =
-    serverEl.value.trim();
+  const payload={
+    game:selectedGame.name,
+    gameId:selectedGame.id,
+    productId:selectedProduct.id,
+    productName:selectedProduct.name,
+    playerId,
+    serverId,
+    paymentMethod:selectedPayment,
+    amount:price,
+    currency:"KHR"
+  };
 
-  if (!playerId) {
+  const btn=
+    document.getElementById("buyBtn");
 
-    errorEl.textContent =
-      "Please enter Player ID.";
+  const oldText=btn.textContent;
 
-    return;
-  }
+  btn.disabled=true;
+  btn.textContent="⏳ Creating order...";
 
-  orderBtn.disabled = true;
-  orderBtn.textContent = "Creating Order...";
-
-  try {
-
-    const response =
-      await fetch(`${API}/orders`, {
-
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
+  try{
+    const res=await fetch(
+      "/api/orders",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":
+            "application/json",
+          "Accept":
+            "application/json"
         },
+        body:JSON.stringify(payload)
+      }
+    );
 
-        body: JSON.stringify({
+    const data=await res.json();
 
-          game: selectedGame,
-
-          productId:
-            selectedProduct.id,
-
-          playerId,
-
-          serverId
-        })
-      });
-
-
-    const data =
-      await response.json();
-
-
-    if (!response.ok ||
-        !data.success) {
-
+    if(!res.ok||!data.success){
       throw new Error(
-        data.error ||
+        data.message||
         "Unable to create order"
       );
     }
 
+    showToast(
+      "✅ Order created successfully"
+    );
 
-    const order =
-      data.order;
+    if(data.paymentUrl){
+      window.location.href=
+        data.paymentUrl;
+      return;
+    }
 
+    if(data.checkoutUrl){
+      window.location.href=
+        data.checkoutUrl;
+      return;
+    }
 
-    resultEl.style.display = "block";
+    if(data.qrUrl){
+      window.location.href=
+        data.qrUrl;
+      return;
+    }
 
-    resultEl.innerHTML = `
-      <strong>✅ Order Created</strong>
+    alert(
+      "Order created successfully.\n\n"+
+      "Order ID: "+
+      (data.orderId||"Pending")
+    );
 
-      <br><br>
+  }catch(err){
+    console.error(err);
 
-      Order ID:
-      <strong>${order.orderId}</strong>
+    showToast(
+      "❌ "+
+      (err.message||
+       "Payment service unavailable")
+    );
+  }finally{
+    btn.disabled=false;
+    btn.textContent=oldText;
 
-      <br>
-
-      Game:
-      ${order.game}
-
-      <br>
-
-      Package:
-      ${order.productName}
-
-      <br>
-
-      Price:
-      ${formatPrice(order.price)}
-
-      <br>
-
-      Player ID:
-      ${order.playerId}
-
-      <br><br>
-
-      Status:
-      <strong>${order.status}</strong>
-
-      <br><br>
-
-      Payment is currently
-      <strong>pending</strong>.
-    `;
-
-
-  } catch (error) {
-
-    errorEl.textContent =
-      error.message;
-
-  } finally {
-
-    orderBtn.disabled = false;
-    orderBtn.textContent =
-      "Create Order";
-
+    updateSummary();
   }
+}
 
+function showToast(message){
+  const toast=
+    document.getElementById("toast");
+
+  toast.textContent=message;
+  toast.classList.add("show");
+
+  clearTimeout(
+    window.__toastTimer
+  );
+
+  window.__toastTimer=
+    setTimeout(()=>{
+      toast.classList.remove("show");
+    },2800);
+}
+
+/* Search */
+
+searchEl.addEventListener(
+  "input",
+  renderGames
+);
+
+/* Categories */
+
+document.querySelectorAll(
+  ".cat"
+).forEach(btn=>{
+  btn.addEventListener(
+    "click",
+    ()=>{
+      activeCategory=
+        btn.dataset.cat;
+
+      document.querySelectorAll(
+        ".cat"
+      ).forEach(x=>{
+        x.classList.toggle(
+          "active",
+          x===btn
+        );
+      });
+
+      renderGames();
+    }
+  );
 });
 
+/* Payment buttons */
 
-loadGames();
+document.querySelectorAll(
+  ".payment"
+).forEach(btn=>{
+  btn.addEventListener(
+    "click",
+    ()=>{
+      selectPayment(
+        btn.dataset.payment
+      );
+    }
+  );
+});
 
-</script></body>
+/* Player ID changes */
+
+document.getElementById(
+  "playerId"
+).addEventListener(
+  "input",
+  updateSummary
+);
+
+document.getElementById(
+  "serverId"
+).addEventListener(
+  "input",
+  updateSummary
+);
+
+/* Initial render */
+
+renderGames();
+renderPackages();
+updateSummary();
+loadPrices();
+
+</script>
+
+</body>
 </html>
