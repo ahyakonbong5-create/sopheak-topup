@@ -1161,18 +1161,17 @@ async function createOrder(){
         data.checkoutUrl;
       return;
     }
+if(data.qrUrl){
+  window.location.href=
+    data.qrUrl;
+  return;
+}
 
-    if(data.qrUrl){
-      window.location.href=
-        data.qrUrl;
-      return;
-    }
-
-    alert(
-      "Order created successfully.\n\n"+
-      "Order ID: "+
-      (data.orderId||"Pending")
-    );
+   alert(
+  "Order created successfully.\n\n"+
+  "Order ID: "+
+  (data.order?.orderId||"Pending")
+);
 
   }catch(err){
     console.error(err);
