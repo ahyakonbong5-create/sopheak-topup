@@ -384,7 +384,7 @@ app.post("/api/payment/webhook", (req, res) => {
 /*
 
 * TODO:
-* 
+
 * 1. Verify webhook signature
 * 2. Verify transaction/order ID
 * 3. Verify amount
@@ -505,9 +505,5 @@ Start server
 */
 
 app.listen(PORT, "0.0.0.0", () => {
-
-console.log(
-"Sopheak Top Up running on port ${PORT}"
-);
-
+  console.log(`Sopheak Top Up running on port ${PORT}`);
 });
